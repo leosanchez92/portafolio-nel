@@ -28,6 +28,8 @@ dependencias externas — funciona directamente desde el disco (`file://`).
 - Íconos: [win98icons.alexmeub.com](https://win98icons.alexmeub.com/),
   extraídos del sistema operativo original de Microsoft.
 - Referencia de UI: [1j01/os-gui](https://github.com/1j01/os-gui).
+- Wallpaper del escritorio (`img/escritorio/nubes.jpg`): foto de cielo
+  nublado, no es el bitmap original de Windows.
 
 ## Licencia
 
