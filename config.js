@@ -4,14 +4,14 @@
    Acá vive la ESTRUCTURA: qué carpetas hay, qué ítems tiene
    cada una y qué descripción se muestra en el panel izquierdo.
 
-   El TEXTO LARGO de cada documento vive en portafolio.html,
+   El TEXTO LARGO de cada documento vive en index.html,
    al final, dentro de <template data-doc="ID">.
    El ID del ítem y el del template tienen que coincidir.
 
    Campos de un ítem:
      id       → identificador único, se usa en la URL (#proyectos/nibi)
      nombre   → cómo se ve el archivo en el explorador
-     icono    → clave del objeto ICONOS en portafolio.html
+     icono    → clave del objeto ICONOS en index.html
      desc     → texto del panel Web View al seleccionarlo
      titulo   → título de la ventana al abrirlo
      oculto   → true para dejarlo como borrador, sin publicar
