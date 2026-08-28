@@ -1,0 +1,308 @@
+# Portafolio Windows 98
+
+Portafolio y currículum de Nel con la interfaz del escritorio de Windows 98.
+La pieza central es el explorador de carpetas con el panel **Web View** a la
+izquierda: un clic sobre un elemento muestra su descripción, doble clic lo abre
+en una ventana.
+
+## Archivos
+
+Los tres van en la misma carpeta.
+
+| Archivo | Qué contiene | Se edita a mano |
+|---|---|---|
+| `index.html` | Estilos, lógica y el texto largo de cada documento | Sí |
+| `config.js` | Estructura: carpetas, ítems, descripciones, enlaces | Sí |
+| `iconos.js` | 22 íconos de Win98 en base64, dos tamaños cada uno | No, es generado |
+
+## Restricciones duras
+
+Estas no se negocian. Son la razón de ser del proyecto.
+
+- **Funciona abriendo el archivo desde el disco** (`file://`), sin servidor.
+- **Sin herramientas de compilación.** Nada de npm, bundlers ni pasos de build.
+- **Sin dependencias externas.** Ni CDN ni librerías.
+- **Nada de `fetch()` ni módulos ES.** CORS los bloquea en `file://`. Por eso la
+  configuración se carga con `<script src>` clásico, que sí funciona.
+- **Nada de `localStorage` ni `sessionStorage`.**
+- El orden de carga importa: `iconos.js`, después `config.js`, después la app.
+
+## Cómo agregar contenido
+
+### Un proyecto nuevo
+
+1. En `config.js`, agregar un ítem al arreglo `items` de la carpeta que
+   corresponda. Campos: `id`, `nombre`, `icono`, `titulo`, `desc`, y los
+   opcionales `repo`, `demo`, `oculto`.
+2. En `index.html`, al final, agregar el bloque
+   `<template data-doc="ID">` con el mismo `id`. Es HTML normal.
+
+Si falta el template, el documento se abre igual y avisa cuál falta. No hay
+falla silenciosa.
+
+### Una carpeta nueva
+
+Copiar un bloque completo de `carpetas` en `config.js` y cambiarle el `id`.
+Aparece sola en el escritorio, en el explorador y en el menú Inicio.
+
+### Un ícono nuevo
+
+`iconos.js` es generado, no se edita a mano. Cada entrada tiene `g` (32 px,
+escritorio y explorador) y `p` (16 px, barras). Si una clave no existe ahí, la
+función `ico()` cae automáticamente al SVG dibujado a mano del objeto `ICONOS`
+en `index.html`. **Ese respaldo no se puede romper:** si se borra
+`iconos.js`, el portafolio tiene que seguir funcionando completo.
+
+## Cómo está organizado el código
+
+`index.html` tiene el JavaScript numerado por secciones:
+
+1. Íconos SVG de respaldo, utilidades de enlaces y la función `ico()`
+2. Gestor de ventanas: crear, enfocar, minimizar, maximizar, arrastrar
+3. Explorador: navegación, panel Web View, historial de Atrás y Adelante
+4. Documentos: clona el `<template>` correspondiente
+5. Enrutador por hash
+6. Diálogos modales
+7. Escritorio, menú Inicio y reloj
+8. Secuencia de arranque
+9. Inicialización
+
+### Enrutador
+
+`#proyectos` abre la carpeta, `#proyectos/nibi` abre el documento. La dirección
+se actualiza sola al navegar. La bandera `hashPropio` distingue los cambios que
+hace la aplicación de los que hace el usuario, para no entrar en bucle.
+
+### Secuencia de arranque
+
+POST de BIOS con test de memoria, después la pantalla de carga, después el
+escritorio. Cualquier tecla o clic la omite. Si el sistema tiene reducción de
+movimiento activada, se salta completa. `Inicio → Apagar → Reiniciar` la repite.
+
+## Convenciones visuales
+
+Cambiarlas rompe la ilusión, que es lo único que este proyecto tiene que lograr.
+
+- Paleta en variables CSS: `--gris #c0c0c0`, `--navy #000080`, `--teal #008080`,
+  `--gris-osc #808080`, `--gris-claro #dfdfdf`.
+- Relieves con las clases `.out` (saliente) e `.in` (hundido). No inventar
+  sombras nuevas: se usan esas dos.
+- Tipografía de 11 px, `MS Sans Serif` con Tahoma de respaldo. Los títulos
+  grandes usan Verdana, que es lo que usaba el Web View real.
+- Los íconos llevan `image-rendering: pixelated`. Nunca escalar un ícono de
+  16 px hacia arriba: existe la versión de 32 px para eso.
+- Sin animaciones fuera de época. Sin sombras difuminadas, sin esquinas
+  redondeadas, sin transiciones suaves.
+
+## Cómo probar
+
+Abrir `index.html` con doble clic. Si funciona así, funciona en todas
+partes. Probar siempre desde el disco, nunca solo con servidor local: un
+servidor esconde justamente los errores que este proyecto tiene que evitar.
+
+Revisar después de cada cambio: que el arranque corra completo, que Atrás y
+Adelante mantengan el historial, que los enlaces `#carpeta/documento` abran
+directo, y que borrando `iconos.js` siga andando todo.
+
+Probar también en pantalla angosta, no solo achicando la ventana del navegador:
+las herramientas de desarrollo con emulación táctil activada revelan los
+problemas de interacción que el mouse esconde.
+
+## Comportamiento responsivo
+
+El portafolio tiene que funcionar en celular. Buena parte de quien reciba el
+enlace lo va a abrir desde el teléfono, y un currículum que no se puede leer ahí
+no cumple su función.
+
+Hay una tensión real que conviene tener presente: el escritorio de Windows 98 es
+una metáfora pensada para mouse y pantalla grande. Ventanas arrastrables, doble
+clic y menús con hover no existen en táctil. La solución no es reproducir el
+escritorio en miniatura, sino conservar la identidad visual y adaptar la
+interacción.
+
+### Qué se conserva y qué se adapta
+
+- **La barra de tareas se queda siempre.** Es el ancla de toda la metáfora. Si
+  desaparece, deja de leerse como Windows.
+- **Bajo 700 px las ventanas abren maximizadas** y sin arrastre. En pantalla
+  chica una ventana flotante es un estorbo, no un guiño.
+- **El panel Web View pasa arriba**, sobre la grilla de íconos, en vez de quedar
+  a la izquierda. La descripción sigue siendo el corazón del proyecto.
+- **El doble clic no existe en táctil.** El primer toque selecciona y muestra la
+  descripción; el segundo toque sobre el mismo elemento lo abre. Se replica el
+  comportamiento sin depender de la velocidad del gesto.
+- **Nada puede depender solo de hover.** El menú Inicio y la barra de menús
+  necesitan responder al toque.
+
+### Reglas concretas
+
+- Ancho mínimo objetivo: **360 px**. Probar en 360, 768 y 1280.
+- Áreas táctiles de al menos 32 px. Los botones de la barra de título son de
+  16×14 px por fidelidad, así que en táctil hay que ampliar su zona activa sin
+  cambiar su tamaño visual.
+- Los rótulos de la barra de herramientas se ocultan y quedan solo los íconos.
+- Los íconos del escritorio se acomodan en grilla, nunca en columna única.
+- El arranque de BIOS baja a 11 px y la pantalla de carga achica el logo.
+- Nunca desactivar el zoom del navegador ni fijar `user-scalable=no`.
+
+### Estado
+
+Implementado hasta ahora: apilado del panel Web View, grilla de íconos más
+angosta, rótulos ocultos en la barra de herramientas y ajuste del arranque.
+Falta lo que depende de la interacción táctil: ventanas maximizadas por
+defecto, el segundo toque para abrir y las áreas activas ampliadas.
+
+## Reorganización pendiente de la estructura
+
+Hoy todo vive en un solo `index.html` de unos 60 KB. Funciona, pero va a crecer.
+Esta es la estructura hacia la que hay que migrar.
+
+Lo que la hace posible: desde `file://` solo están bloqueados `fetch()` y los
+módulos ES. `<link rel="stylesheet">`, `<script src>` e `<img src>` cargan sin
+problema. O sea que el proyecto se puede partir en varios archivos sin tocar
+ninguna restricción dura.
+
+```
+index.html                esqueleto y contenido inyectado
+css/estilos.css
+js/app.js
+js/config.js
+js/iconos.js              generado
+contenido/
+  proyectos/*.md
+  bitacora/*.md
+img/
+  proyectos/              capturas de los visores
+  escritorio/             fondos y texturas
+herramientas/construir.js script de autoría, no de ejecución
+docs/captura.png
+README.md
+LICENSE
+```
+
+### Entradas en markdown
+
+Los `.md` no se pueden leer en tiempo de ejecución, así que se convierten antes.
+`herramientas/construir.js` recorre `contenido/`, transforma cada archivo a HTML
+y lo inserta en `index.html` como `<template data-doc="ID">`.
+
+La distinción importa y no contradice las restricciones duras: es una
+herramienta **de autoría**, no una dependencia de ejecución. Nadie necesita Node
+para ver el portafolio, igual que `iconos.js` ya es un archivo generado. Lo que
+se publica sigue abriéndose con doble clic.
+
+Si el blog resulta ser ocasional y no justifica el script, la alternativa es
+seguir escribiendo directamente en bloques `<template>`. Decisión de volumen,
+no de arquitectura.
+
+### Vista Detalles
+
+El explorador real tenía tres vistas: Iconos grandes, Lista y Detalles. Falta
+implementar la última, con columnas Nombre, Tamaño, Tipo y Modificado, y orden
+al hacer clic en el encabezado.
+
+Es la interfaz correcta para un listado de entradas de blog y sale casi gratis
+sobre la estructura de datos que ya existe. De todo lo pendiente, es lo que más
+rinde por esfuerzo.
+
+### Campo `fecha`
+
+Agregar `fecha` como campo opcional de cada ítem en `config.js`. El panel Web
+View lo muestra como "Modificado:", igual que el original. Sirve para ordenar la
+bitácora y para que se note qué proyectos siguen vivos.
+
+### Bitácora
+
+Carpeta nueva en `config.js`, con ícono de Bloc de notas y entradas nombradas
+como archivos de la época: `2026-08-27 Reproyectar sin sufrir.txt`.
+
+### Imágenes
+
+Las capturas van en `img/` como archivos, no en base64: una sola captura pesa
+más que los 22 íconos juntos. La consecuencia es que el portafolio deja de
+poder enviarse por correo como archivo suelto. Con Pages publicado eso deja de
+importar, pero es una renuncia consciente, no un descuido.
+
+## Publicación en GitHub Pages
+
+El archivo principal se llama `index.html`, no `portafolio.html`. GitHub Pages
+sirve el `index.html` de la raíz, así que la URL queda limpia y los enlaces por
+hash siguen funcionando igual.
+
+Como todo es estático y autocontenido, Pages no necesita configuración: se
+activa apuntando a la rama principal y la raíz del repositorio. No hay paso de
+build ni acción que agregar.
+
+### Estructura del repositorio
+
+```
+index.html          la aplicación completa
+config.js           estructura del portafolio
+iconos.js           íconos en base64 (generado)
+docs/captura.png    captura para el README
+README.md
+LICENSE
+```
+
+### README y About
+
+El repositorio necesita su propio `README.md`, con el mismo molde que los demás
+proyectos de Nel. Este tiene una ventaja: la captura de pantalla explica el
+proyecto mejor que cualquier párrafo, así que va arriba de todo.
+
+Campos del About, que suelen quedar vacíos y son lo que aparece en las
+búsquedas:
+
+- **Description:** una línea de menos de 120 caracteres.
+- **Topics:** `windows-98`, `portfolio`, `gis`, `vanilla-js`, `retro-ui`,
+  `chile`.
+- **Website:** la URL de Pages una vez publicado.
+
+### Licencia
+
+El código es de Nel y va con licencia MIT. Los íconos en mapa de bits no lo
+son: provienen del sistema operativo y son de Microsoft. Ambas cosas se
+declaran por separado en el README, en una línea cada una. No mezclarlas bajo
+una sola licencia.
+
+## Estado actual
+
+Funcionando: escritorio, explorador con Web View, ventanas arrastrables, menú
+Inicio, arranque, enrutador, accesos directos a repositorios.
+
+Pendiente:
+
+- Reemplazar los textos de ejemplo: contacto, formación académica y los
+  `tu-usuario` de los enlaces a GitHub.
+- Agregar capturas de los proyectos. Hoy el portafolio es solo texto y esa es
+  su mayor debilidad.
+- Migrar a la estructura de carpetas descrita más arriba: separar CSS y
+  JavaScript, e implementar la vista Detalles.
+- Completar el comportamiento táctil: ventanas maximizadas bajo 700 px,
+  segundo toque para abrir y áreas activas ampliadas.
+- Publicar en GitHub Pages y completar el campo `demo` correspondiente.
+- Las flechas Atrás, Adelante y Arriba siguen en SVG dibujado a mano. No están
+  en la colección de íconos porque eran recursos internos de `shell32.dll`.
+
+## Idioma y tono
+
+Todo en español latinoamericano, sin voseo ni acento argentino. Los textos de
+la interfaz imitan los del sistema real: "Seleccione un elemento para ver su
+descripción", "0 objeto(s)", "Ahora puede apagar el equipo con seguridad".
+
+## Nota sobre los íconos
+
+Los mapas de bits provienen de la colección de win98icons.alexmeub.com y son
+originales de Microsoft extraídos del sistema operativo. Para un portafolio
+personal es práctica habitual. Para uso institucional o comercial, conviene
+volver a los SVG dibujados a mano, que son originales y no tienen ese problema.
+El respaldo existe justamente para que ese cambio sea borrar un archivo.
+
+## Qué no hacer
+
+- No meter frameworks, bundlers ni dependencias. El valor del proyecto es que
+  se abre con doble clic.
+- No pasar la configuración a JSON externo: obliga a levantar servidor.
+- No romper el respaldo de íconos SVG.
+- No modernizar la estética. Cada decisión visual está tomada para parecerse a
+  un sistema de 1998, no para verse bien según criterios de hoy.
