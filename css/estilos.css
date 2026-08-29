@@ -93,7 +93,7 @@ button{font-family:var(--fuente);font-size:11px;cursor:default}
    ============================================================ */
 #escritorio{
   position:absolute; inset:0 0 28px 0;
-  background:var(--teal) url("img/escritorio/nubes.jpg") center/cover no-repeat;
+  background:var(--teal) url("../img/escritorio/nubes.jpg") center/cover no-repeat;
   padding:6px;
 }
 .icono-escritorio{
@@ -192,10 +192,10 @@ img.ico{image-rendering:pixelated;flex:none}
    grises en reposo, a color al pasar el mouse, como en IE4/Win98. */
 .tico{
   width:20px;height:20px;flex:0 0 20px;
-  background:url("img/vendor/win98/barra-explorador-gris.png") no-repeat;
+  background:url("../img/vendor/win98/barra-explorador-gris.png") no-repeat;
   image-rendering:pixelated;
 }
-.bh:hover:not([disabled]) .tico{background-image:url("img/vendor/win98/barra-explorador.png")}
+.bh:hover:not([disabled]) .tico{background-image:url("../img/vendor/win98/barra-explorador.png")}
 .bh[disabled] .tico{opacity:.45;filter:saturate(0) drop-shadow(1px 1px 0 var(--blanco))}
 /* Flecha desplegable anexa (Atrás, Adelante, Vistas) */
 .bh-menu{
@@ -228,7 +228,7 @@ img.ico{image-rendering:pixelated;flex:none}
 .cuerpo{
   flex:1;display:flex;min-height:0;margin:2px;
   overflow:auto;
-  background:#fff url("img/vendor/win98/wvleft.png") no-repeat left top;
+  background:#fff url("../img/vendor/win98/wvleft.png") no-repeat left top;
 }
 .panel-web{
   flex:0 0 250px; padding:10px 16px 14px; position:relative;
@@ -242,7 +242,7 @@ img.ico{image-rendering:pixelated;flex:none}
 }
 .pw-linea{
   height:1px;margin-bottom:14px;
-  background:#000 url("img/vendor/win98/wvline.png");
+  background:#000 url("../img/vendor/win98/wvline.png");
   background-size:100% 1px;
 }
 .pw-nombre{font-weight:bold;margin-bottom:5px;color:#000080}
