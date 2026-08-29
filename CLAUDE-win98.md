@@ -21,7 +21,13 @@ Estas no se negocian. Son la razón de ser del proyecto.
 
 - **Funciona abriendo el archivo desde el disco** (`file://`), sin servidor.
 - **Sin herramientas de compilación.** Nada de npm, bundlers ni pasos de build.
-- **Sin dependencias externas.** Ni CDN ni librerías.
+- **Dependencias externas y frameworks: sí, pero vendorizados y sin build.**
+  Se pueden usar librerías como [os-gui](https://github.com/1j01/os-gui), o un
+  framework (Vue, Alpine, Preact, etc.), siempre que corran con `<script src>`
+  plano —su build ya hecho, sin paso de compilación propio— y que sus archivos
+  (CSS, JS, sprites) se descarguen y vivan dentro del repo. **Nada de CDN:** el
+  portafolio tiene que seguir funcionando sin internet, abriendo el archivo
+  desde el disco.
 - **Nada de `fetch()` ni módulos ES.** CORS los bloquea en `file://`. Por eso la
   configuración se carga con `<script src>` clásico, que sí funciona.
 - **Nada de `localStorage` ni `sessionStorage`.**
@@ -281,8 +287,9 @@ Pendiente:
 - Completar el comportamiento táctil: ventanas maximizadas bajo 700 px,
   segundo toque para abrir y áreas activas ampliadas.
 - Publicar en GitHub Pages y completar el campo `demo` correspondiente.
-- Las flechas Atrás, Adelante y Arriba siguen en SVG dibujado a mano. No están
-  en la colección de íconos porque eran recursos internos de `shell32.dll`.
+
+Resuelto: la barra de herramientas del explorador ya no usa SVG dibujado a
+mano; usa la tira original `browse-ui` vendorizada (ver la nota de recursos).
 
 ## Idioma y tono
 
@@ -298,10 +305,21 @@ personal es práctica habitual. Para uso institucional o comercial, conviene
 volver a los SVG dibujados a mano, que son originales y no tienen ese problema.
 El respaldo existe justamente para que ese cambio sea borrar un archivo.
 
+La misma consideración aplica a `img/vendor/win98/`: las nubes del Web View
+(`wvleft`), la línea del título (`wvline`) y las tiras de íconos de la barra
+del explorador (`barra-explorador` y su versión gris) son los gráficos
+originales de Windows 98 (C:\WINDOWS\WEB y la interfaz del explorador),
+obtenidos del repositorio 1j01/98 y convertidos a PNG. Son de Microsoft, igual
+que los íconos. En `img/vendor/os-gui/` están los botones de barra de título
+de os-gui (MIT); los sprites de scrollbar de os-gui van incrustados en el CSS
+de index.html como data URI, con su atribución en el comentario.
+
 ## Qué no hacer
 
-- No meter frameworks, bundlers ni dependencias. El valor del proyecto es que
-  se abre con doble clic.
+- No meter bundlers ni pasos de build (npm, Vite, Webpack). Frameworks y
+  dependencias externas sí están permitidos, pero corriendo con `<script src>`
+  plano y vendorizados dentro del repo — nunca por CDN. El valor del proyecto
+  es que se abre con doble clic, sin internet y sin instalar nada.
 - No pasar la configuración a JSON externo: obliga a levantar servidor.
 - No romper el respaldo de íconos SVG.
 - No modernizar la estética. Cada decisión visual está tomada para parecerse a

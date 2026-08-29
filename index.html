@@ -50,6 +50,46 @@ button{font-family:var(--fuente);font-size:11px;cursor:default}
   box-shadow:inset 1px 1px 0 var(--gris-osc), inset -1px -1px 0 var(--blanco)!important;
 }
 
+/* --- Barras de desplazamiento Win98 ---
+   Adaptado de os-gui (MIT, © Isaiah Odhner, https://github.com/1j01/os-gui):
+   pista con trama de tablero, botones con flechas pixeladas y pulgar en relieve. */
+:root{
+  --trama:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAG0lEQVQYV2P8/////4MHDzIwHjhw4L+9vT0DAHAFCj6esq3FAAAAAElFTkSuQmCC");
+  --flechas-scroll:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAJCAYAAABaMo5wAAAAW0lEQVQ4T2NkGGSAcZC5h4FWDvrPwEC02ShqkR0EkkAHuBxMyEKYWYQ8jKEOXQOyo/A5BuZwqqvBZiA+3xMbilQLIWqlcUJRimwPzjRELcdQZA6hREeR4eRoBgBoXhAK6oiMhwAAAABJRU5ErkJggg==");
+}
+/* Aproximación para Firefox. OJO: solo ahí — declarar scrollbar-color en
+   Chrome/Edge desactiva los estilos ::-webkit-scrollbar de abajo. */
+@supports not selector(::-webkit-scrollbar){
+  html{scrollbar-color:var(--gris) var(--gris-claro)}
+}
+::-webkit-scrollbar,
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-button{width:13px;height:13px}
+::-webkit-scrollbar{background:var(--trama) repeat;image-rendering:pixelated}
+::-webkit-scrollbar-thumb{
+  background-color:var(--gris);
+  border-top:1px solid var(--gris); border-left:1px solid var(--gris);
+  border-right:1px solid var(--negro); border-bottom:1px solid var(--negro);
+  box-shadow:inset 1px 1px 0 var(--blanco), inset -1px -1px 0 var(--gris-osc);
+}
+::-webkit-scrollbar-corner{background:var(--gris)}
+::-webkit-scrollbar-button{
+  background-color:var(--gris);
+  border-top:1px solid var(--gris); border-left:1px solid var(--gris);
+  border-right:1px solid var(--negro); border-bottom:1px solid var(--negro);
+  box-shadow:inset 1px 1px 0 var(--blanco), inset -1px -1px 0 var(--gris-osc);
+  background-image:var(--flechas-scroll);
+  image-rendering:pixelated; box-sizing:border-box;
+}
+::-webkit-scrollbar-button:hover:active{border:1px solid var(--gris-osc);box-shadow:none}
+::-webkit-scrollbar-button:horizontal:decrement{background-position:calc(9px * -3 + 1px) 1px}
+::-webkit-scrollbar-button:horizontal:increment{background-position:calc(9px * -2 + 1px) 1px}
+::-webkit-scrollbar-button:vertical:decrement{background-position:calc(9px * -1 + 1px) 1px}
+::-webkit-scrollbar-button:vertical:increment{background-position:1px 1px}
+/* sin botones dobles, como en el original */
+::-webkit-scrollbar-button:start:increment,
+::-webkit-scrollbar-button:end:decrement{display:none}
+
 /* ============================================================
    ESCRITORIO
    ============================================================ */
@@ -64,11 +104,11 @@ button{font-family:var(--fuente);font-size:11px;cursor:default}
   margin-bottom:8px; cursor:default;
 }
 .icono-escritorio img,.icono-escritorio svg{width:32px;height:32px;image-rendering:pixelated}
-.icono-escritorio span{
+.icono-escritorio .etq{
   color:#fff; text-align:center; line-height:1.25; padding:1px 3px;
-  text-shadow:1px 1px 0 rgba(0,0,0,.6);
+  background:var(--teal);
 }
-.icono-escritorio.activo span{background:var(--sel);text-shadow:none;outline:1px dotted #fff}
+.icono-escritorio.activo .etq{background:var(--sel);text-shadow:none;outline:1px dotted #fff}
 .icono-escritorio.activo .marco{filter:hue-rotate(180deg) saturate(1.4) brightness(.85)}
 
 /* ============================================================
@@ -95,7 +135,8 @@ button{font-family:var(--fuente);font-size:11px;cursor:default}
   color:#fff; font-weight:bold; flex:1;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-.barra-titulo svg,.barra-titulo img{width:14px;height:14px}
+.barra-titulo svg,.barra-titulo img{width:16px;height:16px}
+.ventana.inactiva .barra-titulo .tit{color:var(--gris)}
 img.ico{image-rendering:pixelated;flex:none}
 .item.sel img.ico,.icono-escritorio.activo img.ico{filter:sepia(1) hue-rotate(185deg) saturate(4.5) brightness(.78)}
 .btn-tit{
@@ -105,24 +146,39 @@ img.ico{image-rendering:pixelated;flex:none}
   display:flex;align-items:center;justify-content:center;
   font-size:9px;line-height:1;font-weight:bold;padding-bottom:1px;
 }
+.btn-tit img{width:12px;height:10px;image-rendering:pixelated}
 .btn-tit:active{border-color:var(--negro) var(--gris-claro) var(--gris-claro) var(--negro);box-shadow:inset 1px 1px 0 var(--gris-osc)}
 .btn-tit.cerrar{margin-left:2px}
 
+/* --- Bandas tipo rebar (menú, herramientas, dirección) --- */
+.gripper{
+  align-self:stretch; flex:0 0 3px; margin:2px 4px 2px 1px;
+  border:1px solid;
+  border-color:var(--blanco) var(--gris-osc) var(--gris-osc) var(--blanco);
+}
+.banda-sep{border-top:1px solid var(--gris-osc);box-shadow:inset 0 1px 0 var(--blanco)}
+
 /* --- Barra de menús --- */
-.menus{display:flex;gap:0;padding:1px 2px;flex:0 0 auto}
-.menus span{padding:2px 6px}
-.menus span:hover{background:var(--sel);color:#fff}
+.menus{display:flex;align-items:center;gap:0;padding:1px 2px;flex:0 0 auto}
+.menus{flex-wrap:wrap}
+.menus .mn{padding:1px 5px 2px;border:1px solid transparent;white-space:nowrap}
+/* En el Explorador de Win98 los menús se levantan al pasar el mouse,
+   no se pintan de azul (eso era para el resto de las aplicaciones). */
+.menus .mn:hover{border-color:var(--blanco) var(--gris-osc) var(--gris-osc) var(--blanco)}
+.menus .mn:active{border-color:var(--gris-osc) var(--blanco) var(--blanco) var(--gris-osc)}
 .menus u{text-decoration:underline}
+.bandera{margin-left:auto;padding:0 4px;display:flex;align-items:center}
+.bandera img,.bandera svg{width:16px;height:16px;image-rendering:pixelated}
 
 /* --- Barra de herramientas --- */
 .herramientas{
   display:flex;align-items:center;gap:2px;padding:2px;
-  border-top:1px solid var(--blanco);
   flex:0 0 auto; flex-wrap:wrap;
 }
+/* Botones estándar del Explorador: ícono arriba, rótulo abajo */
 .bh{
-  display:flex;align-items:center;gap:4px;
-  padding:3px 5px;background:transparent;border:1px solid transparent;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  min-width:42px;padding:4px 5px 3px;background:transparent;border:1px solid transparent;
   color:#000;
 }
 .bh:hover:not([disabled]){
@@ -131,42 +187,74 @@ img.ico{image-rendering:pixelated;flex:none}
 .bh:active:not([disabled]){border-color:var(--gris-osc) var(--blanco) var(--blanco) var(--gris-osc)}
 .bh[disabled]{color:var(--gris-osc);text-shadow:1px 1px 0 #fff}
 .bh svg,.bh img{width:20px;height:20px}
-.bh[disabled] svg,.bh[disabled] img{opacity:.45;filter:grayscale(1)}
-.separador{width:2px;height:22px;border-left:1px solid var(--gris-osc);border-right:1px solid var(--blanco);margin:0 3px}
+.bh[disabled] svg,.bh[disabled] img{
+  opacity:.6;filter:grayscale(1) contrast(.5) brightness(1.25) drop-shadow(1px 1px 0 var(--blanco));
+}
+/* Íconos reales de la barra del Explorador (tira original vendorizada):
+   grises en reposo, a color al pasar el mouse, como en IE4/Win98. */
+.tico{
+  width:20px;height:20px;flex:0 0 20px;
+  background:url("img/vendor/win98/barra-explorador-gris.png") no-repeat;
+  image-rendering:pixelated;
+}
+.bh:hover:not([disabled]) .tico{background-image:url("img/vendor/win98/barra-explorador.png")}
+.bh[disabled] .tico{opacity:.45;filter:saturate(0) drop-shadow(1px 1px 0 var(--blanco))}
+/* Flecha desplegable anexa (Atrás, Adelante, Vistas) */
+.bh-menu{
+  min-width:13px;width:13px;padding:0;align-self:stretch;
+  margin-left:-2px;justify-content:center;
+}
+.bh-menu svg{width:8px;height:5px}
+.bh-menu[disabled] svg{opacity:.55;filter:none}
+.separador{width:2px;align-self:stretch;margin:2px 3px;border-left:1px solid var(--gris-osc);border-right:1px solid var(--blanco)}
 
 /* --- Barra de direcciones --- */
-.direccion{display:flex;align-items:center;gap:4px;padding:2px 4px;flex:0 0 auto}
+.direccion{display:flex;align-items:center;gap:4px;padding:2px 4px 2px 2px;flex:0 0 auto}
 .direccion .campo{
-  flex:1;display:flex;align-items:center;gap:4px;padding:2px 3px;height:20px;
+  flex:1;display:flex;align-items:center;gap:4px;padding:0 0 0 3px;height:22px;
 }
-.direccion .campo svg,.direccion .campo img{width:14px;height:14px;flex:0 0 14px}
-.direccion .campo span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.direccion .campo svg,.direccion .campo img{width:16px;height:16px;flex:0 0 16px;image-rendering:pixelated}
+.direccion .campo .ruta{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn-desplegable{
+  width:16px;flex:0 0 16px;align-self:stretch;
+  display:flex;align-items:center;justify-content:center;
+}
+.btn-desplegable svg{width:8px;height:5px}
+.btn-desplegable[disabled] svg{opacity:.55}
 
-/* --- Cuerpo del explorador --- */
-.cuerpo{flex:1;display:flex;min-height:0;margin:2px;}
+/* --- Cuerpo del explorador: Web View de Win98 ---
+   Una sola superficie blanca, como la página web incrustada del original.
+   Las nubes (wvleft) y la línea del título (wvline) son los gráficos
+   originales de C:\WINDOWS\WEB, tal como los usaba FOLDER.HTT:
+   background: white URL(wvleft.bmp) no-repeat  +  wvline.gif al 100%. */
+.cuerpo{
+  flex:1;display:flex;min-height:0;margin:2px;
+  overflow:auto;
+  background:#fff url("img/vendor/win98/wvleft.png") no-repeat left top;
+}
 .panel-web{
-  flex:0 0 38%; max-width:230px;
-  background:linear-gradient(160deg,#ffffff 0%,#ffffff 45%,#cfe0f0 100%);
-  border-right:1px solid var(--gris-osc);
-  padding:14px 12px; overflow:auto; position:relative;
+  flex:0 0 250px; padding:10px 16px 14px; position:relative;
 }
-.panel-web::before{
-  content:""; position:absolute; left:0; top:0; bottom:0; width:5px;
-  background:linear-gradient(180deg,#000080,#1084d0 60%,#7fb0dc);
-}
+.pw-ico{display:block;margin-bottom:2px}
+.pw-ico img,.pw-ico svg{width:32px;height:32px;image-rendering:pixelated}
 .pw-titulo{
-  font-family:Verdana,Tahoma,sans-serif; font-size:15px; font-weight:bold;
-  color:#000; line-height:1.15; margin-bottom:6px; word-break:break-word;
+  font-family:Verdana,Tahoma,sans-serif; font-size:21px; font-weight:bold;
+  color:#000; line-height:1.1; margin-bottom:4px; word-break:break-word;
+  letter-spacing:-.5px;
 }
-.pw-linea{height:1px;background:#000;opacity:.55;margin-bottom:9px}
+.pw-linea{
+  height:1px;margin-bottom:14px;
+  background:#000 url("img/vendor/win98/wvline.png");
+  background-size:100% 1px;
+}
 .pw-nombre{font-weight:bold;margin-bottom:5px;color:#000080}
 .pw-desc{line-height:1.55;color:#000}
 .pw-meta{margin-top:10px;line-height:1.6;color:#333}
 .pw-meta b{color:#000}
-.pw-hint{color:#444;font-style:italic;line-height:1.5}
+.pw-hint{color:#000;line-height:1.5}
 
 .panel-iconos{
-  flex:1; background:#fff; overflow:auto; padding:8px 4px;
+  flex:1; padding:8px 4px;
   display:flex; flex-wrap:wrap; align-content:flex-start; gap:2px;
 }
 .item{
@@ -189,14 +277,24 @@ img.ico{image-rendering:pixelated;flex:none}
 .item.sel .marco{filter:hue-rotate(180deg) saturate(1.4) brightness(.85)}
 
 /* --- Barra de estado --- */
-.estado{display:flex;gap:2px;padding:2px;flex:0 0 auto}
+.estado{display:flex;gap:2px;padding:2px 0 0 2px;flex:0 0 auto}
 .estado div{
   padding:2px 5px;
   border:1px solid; border-color:var(--gris-osc) var(--blanco) var(--blanco) var(--gris-osc);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 .estado .e1{flex:1}
-.estado .e2{flex:0 0 90px}
+.estado .e2{flex:0 0 110px;display:flex;align-items:center;gap:4px}
+.estado .e2 img,.estado .e2 svg{width:16px;height:16px;image-rendering:pixelated}
+.estado .grip{
+  flex:0 0 13px;border:none;padding:0;position:relative;
+}
+.estado .grip::after{
+  content:"";position:absolute;right:0;bottom:0;width:12px;height:12px;
+  background:repeating-linear-gradient(135deg,
+    transparent 0 2px, var(--blanco) 2px 3px, var(--gris-osc) 3px 5px);
+  clip-path:polygon(100% 0,100% 100%,0 100%);
+}
 
 /* --- Documento (ventana de contenido) --- */
 .doc{
@@ -244,7 +342,7 @@ img.ico{image-rendering:pixelated;flex:none}
   height:22px;min-width:130px;max-width:170px;display:flex;align-items:center;gap:4px;
   padding:0 6px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
 }
-.tarea svg,.tarea img{width:14px;height:14px;flex:0 0 14px}
+.tarea svg,.tarea img{width:16px;height:16px;flex:0 0 16px;image-rendering:pixelated}
 .tarea span{overflow:hidden;text-overflow:ellipsis}
 .tarea.activa{font-weight:bold}
 #bandeja{
@@ -276,7 +374,10 @@ img.ico{image-rendering:pixelated;flex:none}
 /* --- Diálogo --- */
 #capa{position:absolute;inset:0;display:none;z-index:99997}
 #capa.visible{display:block}
-.dialogo{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:300px}
+/* El centrado se hace en JS con left/top en píxeles: si se centrara con
+   transform:translate(-50%,-50%), al arrastrar (que fija left/top) el
+   diálogo saltaría media ventana por el transform aún aplicado. */
+.dialogo{position:absolute;width:300px}
 .dlg-cuerpo{padding:16px 14px;display:flex;gap:12px;align-items:flex-start}
 .dlg-cuerpo svg,.dlg-cuerpo img{width:32px;height:32px;flex:0 0 32px}
 .dlg-btns{display:flex;justify-content:center;gap:8px;padding:0 10px 12px}
@@ -359,10 +460,11 @@ img.ico{image-rendering:pixelated;flex:none}
 
 /* --- Responsive --- */
 @media (max-width:700px){
-  .panel-web{flex:0 0 100%;max-width:none;border-right:none;border-bottom:1px solid var(--gris-osc);max-height:38%}
   .cuerpo{flex-direction:column}
+  .panel-web{flex:0 0 auto;padding-bottom:6px}
   .item{width:74px}
   .herramientas .rotulo{display:none}
+  .bh{min-width:30px;padding:3px 4px}
 }
 @media (prefers-reduced-motion:no-preference){
   .ventana{animation:aparecer .09s ease-out}
@@ -662,6 +764,13 @@ const ICONOS = {
   adelante:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><path d="M13 5l8 7-8 7v-4H4V9h9z" fill="#2d7a2d" stroke="#000"/></svg>`,
   arriba:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><path class="marco" d="M2 6h8l2 2h10v13H2z" fill="#f7c948" stroke="#000"/><path d="M12 19V11M8 14l4-4 4 4" stroke="#000" stroke-width="2" fill="none"/></svg>`,
   imprimir:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><rect x="6" y="2" width="12" height="6" fill="#fff" stroke="#000"/><rect x="3" y="8" width="18" height="8" fill="#c0c0c0" stroke="#000"/><rect x="6" y="14" width="12" height="8" fill="#fff" stroke="#000"/><rect x="16" y="10" width="3" height="2" fill="#2d7a2d"/></svg>`,
+  cortar:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><path d="M7 2l5 10M17 2l-5 10" stroke="#404040" stroke-width="2" fill="none"/><circle cx="6" cy="17" r="3.5" fill="none" stroke="#000080" stroke-width="2"/><circle cx="18" cy="17" r="3.5" fill="none" stroke="#000080" stroke-width="2"/><path d="M12 12l-3.5 3M12 12l3.5 3" stroke="#404040" stroke-width="2" fill="none"/></svg>`,
+  copiar:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><path d="M4 2h9l3 3v11H4z" fill="#fff" stroke="#000"/><path d="M8 8h9l3 3v11H8z" fill="#fff" stroke="#000"/><rect x="10" y="13" width="8" height="1.4" fill="#1084d0"/><rect x="10" y="16" width="8" height="1.4" fill="#1084d0"/><rect x="10" y="19" width="5" height="1.4" fill="#1084d0"/></svg>`,
+  pegar:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><rect x="3" y="3" width="14" height="19" fill="#b07040" stroke="#000"/><rect x="7" y="1" width="6" height="4" fill="#c0c0c0" stroke="#000"/><path d="M10 8h11v14H10z" fill="#fff" stroke="#000"/><rect x="12" y="11" width="7" height="1.4" fill="#808080"/><rect x="12" y="14" width="7" height="1.4" fill="#808080"/><rect x="12" y="17" width="4" height="1.4" fill="#808080"/></svg>`,
+  deshacer:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><path d="M5 8h11a5 5 0 0 1 0 10h-6" fill="none" stroke="#000080" stroke-width="2.5"/><path d="M9 3L4 8l5 5z" fill="#000080"/></svg>`,
+  eliminar:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><path d="M5 4l14 16M19 4L5 20" stroke="#000" stroke-width="3" fill="none"/></svg>`,
+  propiedades:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><path d="M5 1h10l4 4v14H5z" fill="#fff" stroke="#000"/><rect x="8" y="7" width="8" height="1.4" fill="#808080"/><rect x="8" y="10" width="8" height="1.4" fill="#808080"/><path d="M10 22v-6l2-2 2 2 3-1 2 3v4z" fill="#f2c9a0" stroke="#000"/></svg>`,
+  vistas:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><rect x="2" y="3" width="20" height="18" fill="#fff" stroke="#000"/><rect x="2" y="3" width="20" height="4" fill="#000080"/><rect x="5" y="10" width="4" height="3" fill="#1084d0"/><rect x="5" y="15" width="4" height="3" fill="#1084d0"/><rect x="11" y="10" width="8" height="1.6" fill="#808080"/><rect x="11" y="15" width="8" height="1.6" fill="#808080"/></svg>`,
   inicio:`<svg viewBox="0 0 16 16" shape-rendering="crispEdges"><path d="M1 4l5-2v5L1 9z" fill="#e83030"/><path d="M7 2l7-2v6l-7 1z" fill="#2d9c2d"/><path d="M1 10l5-2v5l-5 2z" fill="#1084d0"/><path d="M7 8l7-1v7l-7 2z" fill="#f7c948"/></svg>`,
   buscar:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><circle cx="10" cy="10" r="6" fill="#cfe0f0" stroke="#000"/><path d="M15 15l6 6" stroke="#000" stroke-width="3"/></svg>`,
   ayuda:`<svg viewBox="0 0 24 24" shape-rendering="crispEdges"><rect x="4" y="2" width="16" height="20" fill="#f7c948" stroke="#000"/><text x="12" y="17" font-size="14" font-weight="bold" text-anchor="middle" fill="#000" font-family="Verdana">?</text></svg>`,
@@ -715,9 +824,9 @@ function crearVentana({titulo, icono, ancho, alto, x, y, contenido, clase=""}){
     <div class="barra-titulo">
       ${ico(icono, "p")}
       <div class="tit">${titulo}</div>
-      <button class="btn-tit" data-a="min" title="Minimizar">_</button>
-      <button class="btn-tit" data-a="max" title="Maximizar">□</button>
-      <button class="btn-tit cerrar" data-a="cerrar" title="Cerrar">✕</button>
+      <button class="btn-tit" data-a="min" title="Minimizar"><img src="img/vendor/os-gui/botones/minimizar.png" alt=""></button>
+      <button class="btn-tit" data-a="max" title="Maximizar"><img src="img/vendor/os-gui/botones/maximizar.png" alt=""></button>
+      <button class="btn-tit cerrar" data-a="cerrar" title="Cerrar"><img src="img/vendor/os-gui/botones/cerrar.png" alt=""></button>
     </div>`;
   w.appendChild(contenido);
   document.body.appendChild(w);
@@ -753,11 +862,14 @@ function minimizar(id){
 }
 function maximizar(id){
   const v = ventanas.get(id); if(!v) return;
+  const img = v.el.querySelector('[data-a="max"] img');
   if(v.restaurar){
     Object.assign(v.el.style, v.restaurar); v.restaurar = null;
+    if(img) img.src = "img/vendor/os-gui/botones/maximizar.png";
   }else{
     v.restaurar = {left:v.el.style.left, top:v.el.style.top, width:v.el.style.width, height:v.el.style.height};
     Object.assign(v.el.style, {left:"0px", top:"0px", width:"100%", height:"calc(100% - 28px)"});
+    if(img) img.src = "img/vendor/os-gui/botones/restaurar.png";
   }
 }
 function arrastrable(w){
@@ -801,33 +913,55 @@ function pintarTareas(){
 function abrirExplorador(idCarpeta = null){
   const cuerpo = document.createElement("div");
   cuerpo.style.cssText = "display:flex;flex-direction:column;flex:1;min-height:0";
+  const flechita = `<svg viewBox="0 0 8 5" shape-rendering="crispEdges"><path d="M0 0h8L4 5z" fill="#000"/></svg>`;
+  // celdas de la tira original browse-ui (20 px cada una); índices según 98.js
+  const tico = n => `<span class="tico" style="background-position:${-20*n}px 0"></span>`;
   cuerpo.innerHTML = `
     <div class="menus">
-      <span><u>A</u>rchivo</span><span><u>E</u>dición</span><span><u>V</u>er</span>
-      <span><u>I</u>r a</span><span>Fa<u>v</u>oritos</span><span>A<u>y</u>uda</span>
+      <div class="gripper"></div>
+      <span class="mn"><u>A</u>rchivo</span><span class="mn"><u>E</u>dición</span><span class="mn"><u>V</u>er</span>
+      <span class="mn"><u>I</u>r a</span><span class="mn">Fa<u>v</u>oritos</span><span class="mn"><u>H</u>erramientas</span><span class="mn">A<u>y</u>uda</span>
     </div>
-    <div class="herramientas">
-      <button class="bh" data-n="atras" disabled>${ico("atras")}<span class="rotulo">Atrás</span></button>
-      <button class="bh" data-n="adelante" disabled>${ico("adelante")}<span class="rotulo">Adelante</span></button>
-      <button class="bh" data-n="arriba" disabled>${ico("arriba")}</button>
+    <div class="herramientas banda-sep">
+      <div class="gripper"></div>
+      <button class="bh" data-n="atras" disabled>${tico(0)}<span class="rotulo">Atrás</span></button>
+      <button class="bh bh-menu" data-n="atras-m" disabled>${flechita}</button>
+      <button class="bh" data-n="adelante" disabled>${tico(1)}<span class="rotulo">Adelante</span></button>
+      <button class="bh bh-menu" data-n="adelante-m" disabled>${flechita}</button>
+      <button class="bh" data-n="arriba" disabled>${tico(44)}<span class="rotulo">Arriba</span></button>
       <div class="separador"></div>
-      <button class="bh" data-n="buscar">${ico("buscar")}<span class="rotulo">Buscar</span></button>
+      <button class="bh" data-gen="Cortar">${tico(21)}<span class="rotulo">Cortar</span></button>
+      <button class="bh" data-gen="Copiar">${tico(22)}<span class="rotulo">Copiar</span></button>
+      <button class="bh" data-gen="Pegar">${tico(23)}<span class="rotulo">Pegar</span></button>
+      <div class="separador"></div>
+      <button class="bh" data-gen="Deshacer">${tico(24)}<span class="rotulo">Deshacer</span></button>
+      <button class="bh" data-gen="Eliminar">${tico(26)}<span class="rotulo">Eliminar</span></button>
+      <button class="bh" data-gen="Propiedades">${tico(31)}<span class="rotulo">Propiedades</span></button>
+      <div class="separador"></div>
+      <button class="bh" data-n="vistas">${tico(38)}<span class="rotulo">Vistas</span></button>
+      <button class="bh bh-menu" data-n="vistas">${flechita}</button>
     </div>
-    <div class="direccion">
-      <span>Dirección</span>
-      <div class="campo in">${ico("carpeta","p")}<span class="ruta">C:\\Portafolio</span></div>
+    <div class="direccion banda-sep">
+      <div class="gripper"></div>
+      <span>Direcci&oacute;n</span>
+      <div class="campo in">${ico("carpeta","p")}<span class="ruta">C:\\Portafolio</span>
+        <button class="btn-desplegable out" disabled title="Direcciones recientes">
+          ${flechita}
+        </button>
+      </div>
     </div>
-    <div class="cuerpo">
+    <div class="cuerpo in">
       <div class="panel-web">
+        <span class="pw-ico"></span>
         <div class="pw-titulo"></div>
         <div class="pw-linea"></div>
         <div class="pw-cont"></div>
       </div>
-      <div class="panel-iconos in"></div>
+      <div class="panel-iconos"></div>
     </div>
     <div class="estado">
       <div class="e1">0 objeto(s)</div>
-      <div class="e2">Mi PC</div>
+      <div class="e2">${ico("pc","p")}<span>Mi PC</span></div>
     </div>`;
 
   const {id, el} = crearVentana({
@@ -849,7 +983,9 @@ function abrirExplorador(idCarpeta = null){
     ventanas.get(id).titulo = datos ? datos.nombre : "Portafolio";
     q(".e1").textContent = lista.length + " objeto(s)";
     q('[data-n="atras"]').disabled = estado.pos === 0;
+    q('[data-n="atras-m"]').disabled = estado.pos === 0;
     q('[data-n="adelante"]').disabled = estado.pos === estado.historial.length - 1;
+    q('[data-n="adelante-m"]').disabled = estado.pos === estado.historial.length - 1;
     q('[data-n="arriba"]').disabled = !carp;
 
     // panel web por defecto
@@ -882,6 +1018,7 @@ function abrirExplorador(idCarpeta = null){
   }
 
   function infoCarpeta(datos){
+    q(".pw-ico").innerHTML = ico(datos ? (datos.icono || "carpeta") : "carpeta");
     q(".pw-titulo").textContent = datos ? datos.nombre : "Portafolio";
     q(".pw-cont").innerHTML = datos
       ? `<div class="pw-desc">${datos.desc}</div>
@@ -912,7 +1049,10 @@ function abrirExplorador(idCarpeta = null){
   q('[data-n="atras"]').onclick = () => { if(estado.pos > 0){ estado.pos--; render(); } };
   q('[data-n="adelante"]').onclick = () => { if(estado.pos < estado.historial.length-1){ estado.pos++; render(); } };
   q('[data-n="arriba"]').onclick = () => navegar(null);
-  q('[data-n="buscar"]').onclick = () => dialogo("Buscar", "La función de búsqueda no está disponible en esta versión. Navega por las carpetas.", ["Aceptar"]);
+  el.querySelectorAll('[data-gen]').forEach(b => b.onclick = () =>
+    dialogo(b.dataset.gen, "Esta función no está disponible: los archivos del portafolio son de solo lectura.", ["Aceptar"]));
+  el.querySelectorAll('[data-n="vistas"]').forEach(b => b.onclick = () =>
+    dialogo("Vistas", "Iconos grandes es la única vista disponible por ahora.", ["Aceptar"]));
   q(".panel-iconos").onclick = e => {
     if(e.target.closest(".item")) return;
     e.currentTarget.querySelectorAll(".item").forEach(x => x.classList.remove("sel"));
@@ -940,9 +1080,10 @@ function abrirDocumento(it, idCarpeta){
   cuerpo.style.cssText = "display:flex;flex-direction:column;flex:1;min-height:0";
   cuerpo.innerHTML = `
     <div class="menus">
-      <span><u>A</u>rchivo</span><span><u>E</u>dición</span><span><u>V</u>er</span><span>A<u>y</u>uda</span>
+      <span class="mn"><u>A</u>rchivo</span><span class="mn"><u>E</u>dición</span><span class="mn"><u>V</u>er</span><span class="mn">A<u>y</u>uda</span>
     </div>
-    <div class="herramientas">
+    <div class="herramientas banda-sep">
+      <div class="gripper"></div>
       <button class="bh" data-n="imprimir">${ico("imprimir")}<span class="rotulo">Imprimir</span></button>
       <button class="bh" data-n="enlace">${ico("globo")}<span class="rotulo">Copiar enlace</span></button>
       ${it.repo ? `<div class="separador"></div><button class="bh" data-n="repo">${ico("repo")}<span class="rotulo">Ver en GitHub</span></button>` : ""}
@@ -1021,7 +1162,7 @@ function dialogo(titulo, texto, botones, alElegir){
     <div class="dialogo ventana" style="z-index:${++z}">
       <div class="barra-titulo">
         <div class="tit">${titulo}</div>
-        <button class="btn-tit cerrar" data-r="">✕</button>
+        <button class="btn-tit cerrar" data-r=""><img src="img/vendor/os-gui/botones/cerrar.png" alt=""></button>
       </div>
       <div class="dlg-cuerpo">${ico("aviso")}<div style="line-height:1.6;padding-top:4px">${texto}</div></div>
       <div class="dlg-btns">${botones.map(b=>`<button class="out" data-r="${b}">${b}</button>`).join("")}</div>
@@ -1029,7 +1170,10 @@ function dialogo(titulo, texto, botones, alElegir){
   capa.querySelectorAll("[data-r]").forEach(b => {
     b.onclick = () => { capa.classList.remove("visible"); capa.innerHTML=""; alElegir && alElegir(b.dataset.r); };
   });
-  arrastrable(capa.querySelector(".dialogo"));
+  const d = capa.querySelector(".dialogo");
+  d.style.left = Math.max(8, (window.innerWidth - d.offsetWidth) / 2) + "px";
+  d.style.top  = Math.max(8, window.innerHeight * .38 - d.offsetHeight / 2) + "px";
+  arrastrable(d);
 }
 
 /* ============================================================
@@ -1047,7 +1191,7 @@ function pintarEscritorio(){
     const e = document.createElement("div");
     e.className = "icono-escritorio";
     e.tabIndex = 0;
-    e.innerHTML = `<span class="marco-ico">${ico(it.i)}${it.atajo ? BADGE : ""}</span><span>${it.n}</span>`;
+    e.innerHTML = `<span class="marco-ico">${ico(it.i)}${it.atajo ? BADGE : ""}</span><span class="etq">${it.n}</span>`;
     e.onclick = () => {
       d.querySelectorAll(".icono-escritorio").forEach(x=>x.classList.remove("activo"));
       e.classList.add("activo");

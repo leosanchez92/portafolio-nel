@@ -16,8 +16,10 @@ visita la versión publicada en GitHub Pages una vez esté activa.
 
 ## Stack
 
-JavaScript, HTML y CSS puros. Sin frameworks, sin bundler, sin
-dependencias externas — funciona directamente desde el disco (`file://`).
+JavaScript, HTML y CSS puros, sin bundler ni paso de build — funciona
+directamente desde el disco (`file://`). Las dependencias externas que se
+usan (como recortes de [os-gui](https://github.com/1j01/os-gui)) están
+vendorizadas dentro del repo, nunca por CDN.
 
 - `index.html` — estilos, lógica y el texto largo de cada documento.
 - `config.js` — estructura: carpetas, ítems, descripciones, enlaces.
@@ -27,7 +29,9 @@ dependencias externas — funciona directamente desde el disco (`file://`).
 
 - Íconos: [win98icons.alexmeub.com](https://win98icons.alexmeub.com/),
   extraídos del sistema operativo original de Microsoft.
-- Referencia de UI: [1j01/os-gui](https://github.com/1j01/os-gui).
+- Botones de la barra de título (`img/vendor/os-gui/botones/`): recortados
+  del sprite `titlebar-buttons.png` de [1j01/os-gui](https://github.com/1j01/os-gui)
+  (MIT, © Isaiah Odhner).
 - Wallpaper del escritorio (`img/escritorio/nubes.jpg`): foto de cielo
   nublado, no es el bitmap original de Windows.
 
