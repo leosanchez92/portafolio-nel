@@ -202,8 +202,10 @@ img.ico{image-rendering:pixelated;flex:none}
   min-width:13px;width:13px;padding:0;align-self:stretch;
   margin-left:-2px;justify-content:center;
 }
-.bh-menu svg{width:8px;height:5px}
-.bh-menu[disabled] svg{opacity:.55;filter:none}
+.bh-menu{color:#000}
+.bh-menu svg{width:7px;height:4px}
+.bh-menu[disabled]{color:var(--gris-osc)}
+.bh-menu[disabled] svg{filter:drop-shadow(1px 1px 0 var(--blanco))}
 .separador{width:2px;align-self:stretch;margin:2px 3px;border-left:1px solid var(--gris-osc);border-right:1px solid var(--blanco)}
 
 /* --- Barra de direcciones --- */
@@ -216,9 +218,13 @@ img.ico{image-rendering:pixelated;flex:none}
 .btn-desplegable{
   width:16px;flex:0 0 16px;align-self:stretch;
   display:flex;align-items:center;justify-content:center;
+  color:#000;
 }
-.btn-desplegable svg{width:8px;height:5px}
-.btn-desplegable[disabled] svg{opacity:.55}
+/* el selector .direccion .campo svg impone 16px: este lo devuelve a 7×4 */
+.direccion .campo .btn-desplegable svg,
+.btn-desplegable svg{width:7px;height:4px;flex:none}
+.btn-desplegable[disabled]{color:var(--gris-osc)}
+.btn-desplegable[disabled] svg{filter:drop-shadow(1px 1px 0 var(--blanco))}
 
 /* --- Cuerpo del explorador: Web View de Win98 ---
    Una sola superficie blanca, como la página web incrustada del original.

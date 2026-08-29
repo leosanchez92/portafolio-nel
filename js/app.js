@@ -175,7 +175,9 @@ function pintarTareas(){
 function abrirExplorador(idCarpeta = null){
   const cuerpo = document.createElement("div");
   cuerpo.style.cssText = "display:flex;flex-direction:column;flex:1;min-height:0";
-  const flechita = `<svg viewBox="0 0 8 5" shape-rendering="crispEdges"><path d="M0 0h8L4 5z" fill="#000"/></svg>`;
+  // Flecha de combo/menú de Win98: pixelada 7×4, escalonada, en currentColor
+  // (negra habilitada; gris con sombra blanca — relieve — deshabilitada).
+  const flechita = `<svg viewBox="0 0 7 4" shape-rendering="crispEdges" fill="currentColor"><rect x="0" y="0" width="7" height="1"/><rect x="1" y="1" width="5" height="1"/><rect x="2" y="2" width="3" height="1"/><rect x="3" y="3" width="1" height="1"/></svg>`;
   // celdas de la tira original browse-ui (20 px cada una); índices según 98.js
   const tico = n => `<span class="tico" style="background-position:${-20*n}px 0"></span>`;
   cuerpo.innerHTML = `
