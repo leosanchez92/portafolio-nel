@@ -7,13 +7,29 @@ en una ventana.
 
 ## Archivos
 
-Los tres van en la misma carpeta.
+Cada archivo declara su nivel en su cabecera: **editable** (se modifica a
+mano), **generado** (lo produce una herramienta; se regenera, no se edita) o
+**vendor** (de terceros; se vuelve a descargar, nunca se retoca — cada
+carpeta vendor tiene un `ORIGEN.md` que dice de dónde salió).
 
-| Archivo | Qué contiene | Se edita a mano |
+| Archivo | Qué contiene | Nivel |
 |---|---|---|
-| `index.html` | Estilos, lógica y el texto largo de cada documento | Sí |
-| `config.js` | Estructura: carpetas, ítems, descripciones, enlaces | Sí |
-| `iconos.js` | 22 íconos de Win98 en base64, dos tamaños cada uno | No, es generado |
+| `index.html` | Esqueleto y el texto largo de cada documento (templates) | Editable |
+| `css/estilos.css` | Todo el CSS, con banderas de sección | Editable |
+| `js/app.js` | Toda la lógica, en secciones numeradas | Editable |
+| `js/config.js` | Estructura: carpetas, ítems, descripciones, contacto | Editable (el de uso diario) |
+| `js/iconos.js` | 22 íconos de Win98 en base64, dos tamaños cada uno | Generado |
+| `img/vendor/os-gui/` | Botones de barra de título (MIT) | Vendor |
+| `img/vendor/win98/` | Nubes, línea y tiras de íconos del explorador | Vendor |
+
+Los datos de contacto viven SOLO en `js/config.js` (`CONFIG.usuario`): los
+`<span data-usuario="…">` de los templates se rellenan solos al abrir cada
+documento. Nunca escribir un correo o usuario de GitHub directo en un
+template.
+
+Los templates de `index.html` van entre los marcadores
+`<!-- CONTENIDO:inicio -->` y `<!-- CONTENIDO:fin -->`: esa es la zona que
+el futuro `herramientas/construir.js` podrá regenerar de forma determinista.
 
 ## Restricciones duras
 
@@ -31,13 +47,14 @@ Estas no se negocian. Son la razón de ser del proyecto.
 - **Nada de `fetch()` ni módulos ES.** CORS los bloquea en `file://`. Por eso la
   configuración se carga con `<script src>` clásico, que sí funciona.
 - **Nada de `localStorage` ni `sessionStorage`.**
-- El orden de carga importa: `iconos.js`, después `config.js`, después la app.
+- El orden de carga importa: `js/iconos.js`, después `js/config.js`,
+  después `js/app.js`.
 
 ## Cómo agregar contenido
 
 ### Un proyecto nuevo
 
-1. En `config.js`, agregar un ítem al arreglo `items` de la carpeta que
+1. En `js/config.js`, agregar un ítem al arreglo `items` de la carpeta que
    corresponda. Campos: `id`, `nombre`, `icono`, `titulo`, `desc`, y los
    opcionales `repo`, `demo`, `oculto`.
 2. En `index.html`, al final, agregar el bloque
@@ -48,20 +65,20 @@ falla silenciosa.
 
 ### Una carpeta nueva
 
-Copiar un bloque completo de `carpetas` en `config.js` y cambiarle el `id`.
+Copiar un bloque completo de `carpetas` en `js/config.js` y cambiarle el `id`.
 Aparece sola en el escritorio, en el explorador y en el menú Inicio.
 
 ### Un ícono nuevo
 
-`iconos.js` es generado, no se edita a mano. Cada entrada tiene `g` (32 px,
+`js/iconos.js` es generado, no se edita a mano. Cada entrada tiene `g` (32 px,
 escritorio y explorador) y `p` (16 px, barras). Si una clave no existe ahí, la
 función `ico()` cae automáticamente al SVG dibujado a mano del objeto `ICONOS`
-en `index.html`. **Ese respaldo no se puede romper:** si se borra
-`iconos.js`, el portafolio tiene que seguir funcionando completo.
+en `js/app.js`. **Ese respaldo no se puede romper:** si se borra
+`js/iconos.js`, el portafolio tiene que seguir funcionando completo.
 
 ## Cómo está organizado el código
 
-`index.html` tiene el JavaScript numerado por secciones:
+`js/app.js` tiene el JavaScript numerado por secciones:
 
 1. Íconos SVG de respaldo, utilidades de enlaces y la función `ico()`
 2. Gestor de ventanas: crear, enfocar, minimizar, maximizar, arrastrar
@@ -108,7 +125,7 @@ servidor esconde justamente los errores que este proyecto tiene que evitar.
 
 Revisar después de cada cambio: que el arranque corra completo, que Atrás y
 Adelante mantengan el historial, que los enlaces `#carpeta/documento` abran
-directo, y que borrando `iconos.js` siga andando todo.
+directo, y que borrando `js/iconos.js` siga andando todo.
 
 Probar también en pantalla angosta, no solo achicando la ventana del navegador:
 las herramientas de desarrollo con emulación táctil activada revelan los
@@ -158,10 +175,12 @@ angosta, rótulos ocultos en la barra de herramientas y ajuste del arranque.
 Falta lo que depende de la interacción táctil: ventanas maximizadas por
 defecto, el segundo toque para abrir y las áreas activas ampliadas.
 
-## Reorganización pendiente de la estructura
+## Estructura de carpetas
 
-Hoy todo vive en un solo `index.html` de unos 60 KB. Funciona, pero va a crecer.
-Esta es la estructura hacia la que hay que migrar.
+La separación de archivos ya está hecha (CSS, lógica y configuración viven
+en sus propios archivos). Lo que sigue pendiente de esta estructura es
+`contenido/` con su `herramientas/construir.js`, y las capturas en
+`img/proyectos/`.
 
 Lo que la hace posible: desde `file://` solo están bloqueados `fetch()` y los
 módulos ES. `<link rel="stylesheet">`, `<script src>` e `<img src>` cargan sin
@@ -194,7 +213,7 @@ y lo inserta en `index.html` como `<template data-doc="ID">`.
 
 La distinción importa y no contradice las restricciones duras: es una
 herramienta **de autoría**, no una dependencia de ejecución. Nadie necesita Node
-para ver el portafolio, igual que `iconos.js` ya es un archivo generado. Lo que
+para ver el portafolio, igual que `js/iconos.js` ya es un archivo generado. Lo que
 se publica sigue abriéndose con doble clic.
 
 Si el blog resulta ser ocasional y no justifica el script, la alternativa es
@@ -213,13 +232,13 @@ rinde por esfuerzo.
 
 ### Campo `fecha`
 
-Agregar `fecha` como campo opcional de cada ítem en `config.js`. El panel Web
+Agregar `fecha` como campo opcional de cada ítem en `js/config.js`. El panel Web
 View lo muestra como "Modificado:", igual que el original. Sirve para ordenar la
 bitácora y para que se note qué proyectos siguen vivos.
 
 ### Bitácora
 
-Carpeta nueva en `config.js`, con ícono de Bloc de notas y entradas nombradas
+Carpeta nueva en `js/config.js`, con ícono de Bloc de notas y entradas nombradas
 como archivos de la época: `2026-08-27 Reproyectar sin sufrir.txt`.
 
 ### Imágenes
@@ -242,9 +261,12 @@ build ni acción que agregar.
 ### Estructura del repositorio
 
 ```
-index.html          la aplicación completa
-config.js           estructura del portafolio
-iconos.js           íconos en base64 (generado)
+index.html          esqueleto + templates de contenido
+css/estilos.css     estilos
+js/app.js           lógica
+js/config.js        estructura del portafolio (editable)
+js/iconos.js        íconos en base64 (generado)
+img/                gráficos propios y vendorizados
 docs/captura.png    captura para el README
 README.md
 LICENSE
@@ -282,8 +304,7 @@ Pendiente:
   `tu-usuario` de los enlaces a GitHub.
 - Agregar capturas de los proyectos. Hoy el portafolio es solo texto y esa es
   su mayor debilidad.
-- Migrar a la estructura de carpetas descrita más arriba: separar CSS y
-  JavaScript, e implementar la vista Detalles.
+- Implementar la vista Detalles del explorador.
 - Completar el comportamiento táctil: ventanas maximizadas bajo 700 px,
   segundo toque para abrir y áreas activas ampliadas.
 - Publicar en GitHub Pages y completar el campo `demo` correspondiente.

@@ -1,5 +1,5 @@
 /* ============================================================
-   CONFIGURACIÓN DEL PORTAFOLIO
+   CONFIGURACIÓN DEL PORTAFOLIO — ARCHIVO EDITABLE
    ------------------------------------------------------------
    Acá vive la ESTRUCTURA: qué carpetas hay, qué ítems tiene
    cada una y qué descripción se muestra en el panel izquierdo.
@@ -11,7 +11,7 @@
    Campos de un ítem:
      id       → identificador único, se usa en la URL (#proyectos/nibi)
      nombre   → cómo se ve el archivo en el explorador
-     icono    → clave del objeto ICONOS en index.html
+     icono    → clave del objeto ICONOS en js/app.js
      desc     → texto del panel Web View al seleccionarlo
      titulo   → título de la ventana al abrirlo
      oculto   → true para dejarlo como borrador, sin publicar

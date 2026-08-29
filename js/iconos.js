@@ -1,3 +1,5 @@
+/* GENERADO — no editar a mano. Si se borra este archivo, el portafolio
+   sigue funcionando con los íconos SVG de respaldo de js/app.js. */
 /* ============================================================
    ÍCONOS EN MAPA DE BITS  (generado automáticamente)
    ------------------------------------------------------------
