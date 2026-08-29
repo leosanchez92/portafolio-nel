@@ -295,8 +295,14 @@ una sola licencia.
 
 ## Estado actual
 
-Funcionando: escritorio, explorador con Web View, ventanas arrastrables, menú
-Inicio, arranque, enrutador, accesos directos a repositorios.
+Funcionando: escritorio, ventanas arrastrables, menú Inicio, arranque,
+enrutador, accesos directos a repositorios, y el explorador replicando el de
+Windows 98 real: Web View con los gráficos originales (nubes `wvleft`, línea
+`wvline`), barra de herramientas estándar con la tira `browse-ui` (gris en
+reposo, color al pasar el mouse), scrollbars clásicos de os-gui, bandas rebar
+con agarraderas, combobox de dirección con la flecha pixelada de 7×4 y barra
+de estado con Mi PC. Los menús superiores son decorativos por decisión: los
+botones sin función muestran un diálogo de época.
 
 Pendiente:
 
