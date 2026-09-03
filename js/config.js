@@ -78,53 +78,32 @@ window.CONFIG = {
       id: "proyectos",
       nombre: "Proyectos",
       icono: "carpeta",
-      desc: "Herramientas, visores y piezas cartográficas. Cada archivo es un proyecto real, en producción o entregado.",
+      desc: "Visores territoriales entregados y proyectos en curso.",
       items: [
         {
-          id: "generador-censal",
-          nombre: "Generador de visores censales",
+          id: "visor-nueva-imperial",
+          nombre: "Visor Territorial Nueva Imperial",
           icono: "mapa",
-          titulo: "Generador de visores censales",
-          repo: "https://github.com/tu-usuario/generador-visores-censales",
-          desc: "Herramienta que convierte un requerimiento de datos censales en un visor web autocontenido, sin escribir código."
+          titulo: "Visor Territorial Nueva Imperial",
+          repo: "https://github.com/leosanchez92/VISOR_V1",
+          demo: "http://mapas.nuevaimperial.cl",
+          desc: "Visor territorial con localidades, sedes rurales, límite comunal, juntas de vecinos y Plan Regulador Comunal, para la Municipalidad de Nueva Imperial."
         },
         {
-          id: "ipc",
-          nombre: "Visores de terreno IPC",
+          id: "visor-nacimiento",
+          nombre: "Visor Territorial Nacimiento",
           icono: "mapa",
-          titulo: "Sistema de visores de terreno IPC",
-          desc: "Sistema de visores para las rutas de recolección del Índice de Precios al Consumidor."
+          titulo: "Visor Territorial Nacimiento",
+          repo: "https://github.com/leosanchez92/VISOR_V1_NACIMIENTO",
+          desc: "Visor territorial con Plan Regulador Comunal, construido para la Municipalidad de Nacimiento."
         },
         {
-          id: "pesca",
-          nombre: "Storymap desembarque pesquero",
-          icono: "grafico",
-          titulo: "Storymap de desembarque pesquero",
-          desc: "Narrativa cartográfica sobre desembarques en caletas y puntos de la costa de O'Higgins."
-        },
-        {
-          id: "nibi",
-          nombre: "Nibi — chatbot censal",
+          id: "noventas",
+          nombre: "noventas",
           icono: "terminal",
-          titulo: "Nibi — chatbot de datos censales",
-          repo: "https://github.com/tu-usuario/nibi",
-          desc: "Asistente en R que consulta datos del Censo 2024 en lenguaje natural."
-        },
-        {
-          id: "visor-municipal",
-          nombre: "Visor territorial municipal",
-          icono: "globo",
-          titulo: "Visor territorial municipal",
-          desc: "Plataforma de consulta territorial para municipios, en producción."
-        },
-        {
-          id: "csv-kmz",
-          nombre: "Conversor CSV a KMZ",
-          icono: "herramienta",
-          titulo: "Conversor CSV a KMZ",
-          repo: "https://github.com/tu-usuario/csv-a-kmz",
-          demo: "https://tu-usuario.github.io/csv-a-kmz/",
-          desc: "Utilitario web que convierte planillas con coordenadas a KMZ, con reproyección incluida."
+          titulo: "noventas",
+          repo: "https://github.com/leosanchez92/noventas",
+          desc: "Juego. En curso."
         }
       ]
     },

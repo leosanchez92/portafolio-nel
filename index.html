@@ -181,84 +181,24 @@
   <p>La dirección del navegador refleja dónde estás: <b>#proyectos</b> abre la carpeta, y <b>#proyectos/nibi</b> abre ese documento directamente. Sirve para mandarle a alguien un proyecto puntual.</p>
 </template>
 
-<template data-doc="generador-censal">
-  <h1>Generador de visores censales</h1>
-  <p class="sub">INE O'Higgins · Herramienta interna</p>
-  <h2>El problema</h2>
-  <p>Cada requerimiento de datos censales a nivel de manzana terminaba en un archivo plano que el solicitante no podía interpretar espacialmente. Producir un visor a medida por cada solicitud no escalaba.</p>
-  <h2>La solución</h2>
-  <p>Un generador que recibe el GeoJSON y la configuración del requerimiento, y devuelve un visor HTML completo y autónomo, listo para enviar por correo.</p>
-  <ul>
-    <li>Detección automática de EPSG y reproyección con proj4js.</li>
-    <li>Coropleta por cuantiles con tratamiento explícito de "sin datos".</li>
-    <li>Indicadores configurables y renombrado de campos técnicos a nombres legibles.</li>
-    <li>Plantilla del visor incrustada, sin dependencias externas.</li>
-  </ul>
-  <div class="tags"><span class="tag">JavaScript</span><span class="tag">MapLibre GL JS</span><span class="tag">proj4js</span><span class="tag">GeoJSON</span></div>
+<template data-doc="visor-nueva-imperial">
+  <h1>Visor Territorial Nueva Imperial</h1>
+  <p class="sub">Municipalidad de Nueva Imperial · SECPLA</p>
+  <p>Conjunto de visores geográficos interactivos construidos con Leaflet para la comuna de Nueva Imperial. Cada visor permite explorar distintas capas de información territorial sobre un mapa base, con búsqueda, leyendas y paneles de información: localidades y sedes rurales, límite comunal, juntas de vecinos y Plan Regulador Comunal.</p>
+  <div class="tags"><span class="tag">Leaflet</span><span class="tag">JavaScript</span><span class="tag">SIG municipal</span></div>
 </template>
 
-<template data-doc="ipc">
-  <h1>Sistema de visores de terreno IPC</h1>
-  <p class="sub">INE O'Higgins · Dos generaciones (V1 → V2)</p>
-  <p>Herramienta que produce visores autocontenidos para la recolección en terreno del IPC, pensados para funcionar en equipos sin conexión ni permisos de instalación.</p>
-  <h2>Decisiones de diseño</h2>
-  <ul>
-    <li>Filtros multiselección por semana de recolección.</li>
-    <li>Mapas base vectoriales con marcadores HTML en lugar de capas de símbolos GPU: la carga de glifos falla al abrir desde el disco, y la fidelidad visual no era negociable.</li>
-    <li>Paginador para puntos que agrupan varios registros en la misma coordenada.</li>
-  </ul>
-  <h2>Aprendizaje</h2>
-  <p>La restricción técnica más dura resultó ser la más productiva: diseñar para que funcione sin servidor obliga a decisiones honestas sobre peso, dependencias y carga cognitiva.</p>
-  <div class="tags"><span class="tag">JavaScript</span><span class="tag">MapLibre GL JS</span><span class="tag">UX geoespacial</span></div>
+<template data-doc="visor-nacimiento">
+  <h1>Visor Territorial Nacimiento</h1>
+  <p class="sub">Trabajo freelance</p>
+  <p>Visor geográfico interactivo construido con Leaflet y Bootstrap para la comuna de Nacimiento, con una página de inicio y un visor temático del Plan Regulador Comunal.</p>
+  <div class="tags"><span class="tag">Leaflet</span><span class="tag">Bootstrap</span><span class="tag">SIG municipal</span></div>
 </template>
 
-<template data-doc="pesca">
-  <h1>Storymap de desembarque pesquero</h1>
-  <p class="sub">INE O'Higgins</p>
-  <p>Pieza de narrativa espacial que recorre los datos de desembarque en ocho localidades de la costa regional, distinguiendo caletas de puntos de desembarque.</p>
-  <ul>
-    <li>Consolidación de datos 2023–2025 con financiamiento GORE / INDESPA.</li>
-    <li>Indicadores por localidad y tipología.</li>
-    <li>Estimación de coordenadas documentada explícitamente donde el dato original no existía.</li>
-  </ul>
-  <p>El principio que guió la pieza: cuando un dato es estimado, se declara. La transparencia metodológica es parte del diseño, no una nota al pie.</p>
-  <div class="tags"><span class="tag">Storymap</span><span class="tag">MapLibre GL JS</span><span class="tag">GeoJSON</span></div>
-</template>
-
-<template data-doc="nibi">
-  <h1>Nibi</h1>
-  <p class="sub">Chatbot de consulta censal en R</p>
-  <p>Interfaz conversacional que traduce preguntas en lenguaje natural a consultas sobre los datos del Censo 2024 de O'Higgins almacenados en Parquet.</p>
-  <ul>
-    <li>Sistema de diccionario para traducir variables técnicas a lenguaje humano y de vuelta.</li>
-    <li>Manejo cuidadoso del sistema de valores faltantes tipados de R.</li>
-    <li>Pipeline de consulta reutilizable con funciones de filtro, traducción y exportación.</li>
-  </ul>
-  <div class="tags"><span class="tag">R</span><span class="tag">ellmer</span><span class="tag">Parquet</span><span class="tag">dplyr</span></div>
-</template>
-
-<template data-doc="visor-municipal">
-  <h1>Visor territorial municipal</h1>
-  <p class="sub">Clientes municipales · En producción</p>
-  <p>Plataforma web de consulta territorial pensada para equipos municipales sin formación SIG: capas prediales, límites administrativos, infraestructura y consultas por dirección.</p>
-  <ul>
-    <li>Arquitectura basada en CDN, sin herramientas de compilación, para facilitar el mantenimiento por parte del municipio.</li>
-    <li>Contenido y capas definidos en archivos de configuración JSON.</li>
-    <li>Diseño responsivo para uso en terreno desde el celular.</li>
-  </ul>
-  <div class="tags"><span class="tag">MapLibre GL JS</span><span class="tag">JSON</span><span class="tag">Diseño de sistema</span></div>
-</template>
-
-<template data-doc="csv-kmz">
-  <h1>Conversor CSV a KMZ</h1>
-  <p class="sub">Utilitario web autocontenido</p>
-  <p>Resuelve una tarea pequeña y frecuente: pasar de una planilla con coordenadas a un archivo abrible en Google Earth, sin instalar nada.</p>
-  <ul>
-    <li>Reproyección entre sistemas de referencia con proj4js.</li>
-    <li>Mapeo de columnas con detección automática por similitud de nombres.</li>
-    <li>Soporte de CSV y XLSX.</li>
-  </ul>
-  <div class="tags"><span class="tag">JavaScript</span><span class="tag">proj4js</span><span class="tag">SheetJS</span></div>
+<template data-doc="noventas">
+  <h1>noventas</h1>
+  <p class="sub">En curso</p>
+  <p>Juego en desarrollo. Todavía no hay más detalles públicos.</p>
 </template>
 
 <template data-doc="codigo-chatbot-censo">
