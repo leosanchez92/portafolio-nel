@@ -175,37 +175,44 @@ window.CONFIG = {
       desc: "Selección de repositorios en GitHub: el código tal cual, sin el envoltorio narrativo de la carpeta Proyectos.",
       items: [
         {
-          id: "codigo-portafolio",
-          nombre: "portafolio-nel",
+          id: "codigo-chatbot-censo",
+          nombre: "chatbot-censo",
           icono: "terminal",
-          titulo: "portafolio-nel",
-          repo: "https://github.com/leosanchez92/portafolio-nel",
-          desc: "El código de este mismo portafolio: HTML, CSS y JS planos, sin build, se abre directo desde el disco."
+          titulo: "chatbot-censo",
+          repo: "https://github.com/leosanchez92/chatbot-censo",
+          desc: "Chatbot en R (Nibi) que responde preguntas en lenguaje natural sobre el Censo 2024 de O'Higgins, vía tool calling con un LLM. En construcción (~40%)."
         },
         {
-          id: "codigo-generador-censal",
-          nombre: "generador-visores-censales",
+          id: "codigo-extract-wikimapia",
+          nombre: "extract-wikimapia",
           icono: "terminal",
-          titulo: "generador-visores-censales",
-          repo: "https://github.com/tu-usuario/generador-visores-censales",
-          desc: "Repositorio del generador de visores censales. Ficha completa en Proyectos."
+          titulo: "extract-wikimapia",
+          repo: "https://github.com/leosanchez92/extract-wikimapia",
+          desc: "Visor web autocontenido que consulta la API de Wikimapia y muestra los lugares registrados por comuna de la Región de O'Higgins, cruzados con los límites de OpenStreetMap."
         },
         {
-          id: "codigo-nibi",
-          nombre: "nibi",
+          id: "codigo-generador-html",
+          nombre: "generador-html",
           icono: "terminal",
-          titulo: "nibi",
-          repo: "https://github.com/tu-usuario/nibi",
-          desc: "Repositorio del chatbot censal en R. Ficha completa en Proyectos."
+          titulo: "generador-html",
+          repo: "https://github.com/leosanchez92/generador-html",
+          desc: "Generador de visores interactivos de manzanas censales: un solo HTML que recibe un GeoJSON y produce otro HTML autocontenido con indicadores y mapa coroplético."
         },
         {
-          id: "codigo-csv-kmz",
-          nombre: "csv-a-kmz",
+          id: "codigo-kmz-auto",
+          nombre: "kmz-auto",
           icono: "terminal",
-          titulo: "csv-a-kmz",
-          repo: "https://github.com/tu-usuario/csv-a-kmz",
-          demo: "https://tu-usuario.github.io/csv-a-kmz/",
-          desc: "Repositorio del conversor CSV a KMZ. Ficha completa en Proyectos."
+          titulo: "kmz-auto",
+          repo: "https://github.com/leosanchez92/kmz-auto",
+          desc: "Script en R que exporta Unidades Primarias de Muestreo (UPM) a archivos KML para Google Earth, con etiquetas y tabla emergente por unidad. Proyecto de 2022."
+        },
+        {
+          id: "codigo-visor-censo-manzanas",
+          nombre: "visor-censo-manzanas",
+          icono: "terminal",
+          titulo: "visor-censo-manzanas",
+          repo: "https://github.com/leosanchez92/visor-censo-manzanas",
+          desc: "Mapa coroplético interactivo por manzana para cualquier variable del Censo 2024: cambia el nombre de una columna del GeoPackage y obtienes un mapa nuevo, sin tocar código."
         }
       ]
     },

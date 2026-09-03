@@ -261,32 +261,39 @@
   <div class="tags"><span class="tag">JavaScript</span><span class="tag">proj4js</span><span class="tag">SheetJS</span></div>
 </template>
 
-<template data-doc="codigo-portafolio">
-  <h1>portafolio-nel</h1>
-  <p class="sub">Repositorio · GitHub</p>
-  <p>El código de este mismo portafolio: HTML, CSS y JavaScript planos, sin bundlers ni pasos de build, pensado para abrirse con doble clic desde el disco.</p>
-  <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Sin build</span></div>
+<template data-doc="codigo-chatbot-censo">
+  <h1>chatbot-censo</h1>
+  <p class="sub">Repositorio · GitHub · En construcción (~40%)</p>
+  <p>Nibi: chatbot en R que responde preguntas en lenguaje natural sobre los datos del Censo 2024 de la Región de O'Higgins. Combina el motor de tabulación con un modelo de lenguaje vía tool calling — el usuario pregunta en texto libre y el modelo decide cuándo consultar los microdatos. Prototipo funcional, corre dentro de un entorno R, todavía sin interfaz desplegada.</p>
+  <div class="tags"><span class="tag">R</span><span class="tag">LLM / tool calling</span><span class="tag">Censo 2024</span><span class="tag">Parquet</span></div>
 </template>
 
-<template data-doc="codigo-generador-censal">
-  <h1>generador-visores-censales</h1>
+<template data-doc="codigo-extract-wikimapia">
+  <h1>extract-wikimapia</h1>
   <p class="sub">Repositorio · GitHub</p>
-  <p>Código del generador que convierte un requerimiento de datos censales en un visor web autocontenido. La ficha completa, con el problema y las decisiones de diseño, está en <b>Proyectos</b>.</p>
-  <div class="tags"><span class="tag">JavaScript</span><span class="tag">MapLibre GL JS</span><span class="tag">proj4js</span></div>
+  <p>Visor web autocontenido que consulta la API de Wikimapia y muestra los lugares registrados en cada una de las 33 comunas de la Región de O'Higgins, sobre un mapa. Los límites comunales se obtienen al vuelo desde OpenStreetMap / Nominatim. Resuelve el transporte de la API antigua con descubrimiento automático de JSONP.</p>
+  <div class="tags"><span class="tag">HTML</span><span class="tag">Wikimapia API</span><span class="tag">OpenStreetMap</span><span class="tag">JSONP</span></div>
 </template>
 
-<template data-doc="codigo-nibi">
-  <h1>nibi</h1>
+<template data-doc="codigo-generador-html">
+  <h1>generador-html</h1>
   <p class="sub">Repositorio · GitHub</p>
-  <p>Código del chatbot en R que traduce preguntas en lenguaje natural a consultas sobre los datos del Censo 2024. La ficha completa está en <b>Proyectos</b>.</p>
-  <div class="tags"><span class="tag">R</span><span class="tag">ellmer</span><span class="tag">Parquet</span></div>
+  <p>Generador de visores interactivos de manzanas censales: un solo archivo HTML, sin servidor ni instalación, que recibe un GeoJSON y produce otro HTML autocontenido con indicadores configurables y mapa coroplético por cuantiles, listo para compartir o publicar en GitHub Pages.</p>
+  <div class="tags"><span class="tag">JavaScript</span><span class="tag">MapLibre GL JS</span><span class="tag">proj4js</span><span class="tag">GeoJSON</span></div>
 </template>
 
-<template data-doc="codigo-csv-kmz">
-  <h1>csv-a-kmz</h1>
+<template data-doc="codigo-kmz-auto">
+  <h1>kmz-auto</h1>
+  <p class="sub">Repositorio · GitHub · Proyecto de 2022</p>
+  <p>Script en R que genera archivos KML, visualizables en Google Earth, para un conjunto de Unidades Primarias de Muestreo (UPM) a partir de una capa geográfica: recorre una lista de IDs y produce un archivo por unidad, con etiquetas y tabla emergente de comuna e ID.</p>
+  <div class="tags"><span class="tag">R</span><span class="tag">sf</span><span class="tag">KML</span><span class="tag">UPM</span></div>
+</template>
+
+<template data-doc="codigo-visor-censo-manzanas">
+  <h1>visor-censo-manzanas</h1>
   <p class="sub">Repositorio · GitHub</p>
-  <p>Código del utilitario que convierte planillas con coordenadas a KMZ, con reproyección incluida. La ficha completa está en <b>Proyectos</b>.</p>
-  <div class="tags"><span class="tag">JavaScript</span><span class="tag">proj4js</span><span class="tag">SheetJS</span></div>
+  <p>Herramienta en R que genera un mapa coroplético interactivo de cualquier variable disponible por manzana en la cartografía del Censo 2024. La variable, la comuna y los cortes de la coropleta son parámetros: cambiar el nombre de una columna del GeoPackage da un mapa nuevo, sin tocar el resto del código.</p>
+  <div class="tags"><span class="tag">R</span><span class="tag">MapLibre GL JS</span><span class="tag">Censo 2024</span><span class="tag">GeoPackage</span></div>
 </template>
 
 <template data-doc="sig">
