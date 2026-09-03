@@ -1,6 +1,6 @@
 # Portafolio — Nel
 
-Portafolio y currículum de Nel, Especialista GIS (Región de
+Portafolio y currículum de Nel, Geógrafo especialista en SIG (Región de
 O'Higgins, Chile), construido como una recreación del escritorio de
 Windows 98. La pieza central es un explorador de carpetas con panel
 **Web View**: un clic sobre un elemento muestra su descripción, doble clic
