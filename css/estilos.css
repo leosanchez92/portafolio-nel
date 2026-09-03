@@ -95,6 +95,7 @@ button{font-family:var(--fuente);font-size:11px;cursor:default}
   position:absolute; inset:0 0 28px 0;
   background:var(--teal) url("../img/escritorio/nubes.jpg") center/cover no-repeat;
   padding:6px;
+  display:flex; flex-direction:column; flex-wrap:wrap; align-content:flex-start;
 }
 .icono-escritorio{
   width:76px; padding:4px 2px 2px;
@@ -122,6 +123,12 @@ button{font-family:var(--fuente);font-size:11px;cursor:default}
   display:flex; flex-direction:column;
   min-width:260px; min-height:160px;
 }
+/* Redimensionar a mano, solo en escritorio: bajo 700 px las ventanas van
+   siempre maximizadas (ver tamMovil() en app.js) y no tendría sentido.
+   Los diálogos (.dialogo) quedan afuera, con su tamaño fijo de siempre. */
+@media (min-width:700px){
+  .ventana:not(.dialogo){resize:both; overflow:hidden}
+}
 .barra-titulo{
   height:18px; flex:0 0 18px;
   background:linear-gradient(90deg,#000080,#1084d0);
@@ -147,6 +154,12 @@ img.ico{image-rendering:pixelated;flex:none}
 .btn-tit img{width:12px;height:10px;image-rendering:pixelated}
 .btn-tit:active{border-color:var(--negro) var(--gris-claro) var(--gris-claro) var(--negro);box-shadow:inset 1px 1px 0 var(--gris-osc)}
 .btn-tit.cerrar{margin-left:2px}
+/* En táctil, 16x14 px queda bajo el mínimo recomendado de 32 px. Se agranda
+   solo la zona activa (pseudo-elemento invisible) sin tocar el tamaño visual. */
+@media (pointer:coarse){
+  .btn-tit{position:relative}
+  .btn-tit::before{content:"";position:absolute;top:-9px;bottom:-9px;left:-8px;right:-8px}
+}
 
 /* --- Bandas tipo rebar (menú, herramientas, dirección) --- */
 .gripper{

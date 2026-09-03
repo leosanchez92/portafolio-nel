@@ -63,23 +63,66 @@ const ico = (k, tam) => {
   return ICONOS[k] || ICONOS.doc;
 };
 
+/* Toque simple selecciona, toque doble abre: dblclick no es fiable en
+   pantallas táctiles, así que se detecta a mano por tiempo entre toques.
+   Un movimiento de más de 10 px entre inicio y fin se trata como scroll,
+   no como toque, para no robarle el gesto a los paneles con overflow. */
+function alTocar(el, seleccionar, abrir){
+  let ultimo = 0, x0 = 0, y0 = 0, movido = false;
+  el.addEventListener("touchstart", e => {
+    const t = e.touches[0];
+    x0 = t.clientX; y0 = t.clientY; movido = false;
+  }, {passive:true});
+  el.addEventListener("touchmove", e => {
+    const t = e.touches[0];
+    if(Math.abs(t.clientX - x0) > 10 || Math.abs(t.clientY - y0) > 10) movido = true;
+  }, {passive:true});
+  el.addEventListener("touchend", e => {
+    if(movido) return;
+    e.preventDefault();
+    const ahora = Date.now();
+    if(ahora - ultimo < 400){
+      ultimo = 0;
+      abrir();
+    }else{
+      ultimo = ahora;
+      seleccionar();
+      el.focus();
+    }
+  }, {passive:false});
+}
+
 /* ============================================================
    3. GESTOR DE VENTANAS
    ============================================================ */
 let z = 100, idVentana = 0;
 const ventanas = new Map();
 
+// Bajo 700 px las ventanas flotantes son un estorbo: abren maximizadas y
+// sin arrastre. Mismo umbral que el media query "Responsive" del CSS: se
+// consulta con matchMedia, no con innerWidth, para que quede atado al mismo
+// breakpoint que ya define el CSS.
+function tamMovil(){ return window.matchMedia("(max-width:700px)").matches; }
+
+function ventanaMaximizada(w){
+  Object.assign(w.style, {left:"0px", top:"0px", width:"100%", height:"calc(100% - 28px)"});
+}
+
 function crearVentana({titulo, icono, ancho, alto, x, y, contenido, clase=""}){
   const id = "v" + (++idVentana);
   const w = document.createElement("div");
   w.className = "ventana " + clase;
   w.id = id;
-  const maxA = Math.min(ancho, window.innerWidth - 20);
-  const maxH = Math.min(alto, window.innerHeight - 60);
-  w.style.width = maxA + "px";
-  w.style.height = maxH + "px";
-  w.style.left = (x ?? Math.max(8, (window.innerWidth - maxA)/2 + (idVentana%5)*16)) + "px";
-  w.style.top  = (y ?? Math.max(8, (window.innerHeight - 28 - maxH)/2 + (idVentana%5)*16)) + "px";
+  if(tamMovil()){
+    ventanaMaximizada(w);
+  }else{
+    const maxA = Math.min(ancho, window.innerWidth - 20);
+    const maxH = Math.min(alto, window.innerHeight - 60);
+    w.style.width = maxA + "px";
+    w.style.height = maxH + "px";
+    w.style.left = (x ?? Math.max(8, (window.innerWidth - maxA)/2 + (idVentana%5)*16)) + "px";
+    w.style.top  = (y ?? Math.max(8, (window.innerHeight - 28 - maxH)/2 + (idVentana%5)*16)) + "px";
+  }
   w.style.zIndex = ++z;
 
   w.innerHTML = `
@@ -123,6 +166,7 @@ function minimizar(id){
   v.el.classList.add("inactiva"); pintarTareas();
 }
 function maximizar(id){
+  if(tamMovil()) return; // en móvil las ventanas quedan siempre maximizadas
   const v = ventanas.get(id); if(!v) return;
   const img = v.el.querySelector('[data-a="max"] img');
   if(v.restaurar){
@@ -137,6 +181,7 @@ function maximizar(id){
 function arrastrable(w){
   const barra = w.querySelector(".barra-titulo");
   const iniciar = (px,py) => {
+    if(tamMovil()) return; // sin arrastre en móvil, las ventanas van maximizadas
     const r = w.getBoundingClientRect();
     const dx = px - r.left, dy = py - r.top;
     const mover = (mx,my) => {
@@ -276,6 +321,7 @@ function abrirExplorador(idCarpeta = null){
       d.onclick = seleccionar;
       d.ondblclick = abrir;
       d.onkeydown = e => { if(e.key === "Enter") abrir(); if(e.key === " "){e.preventDefault(); seleccionar();} };
+      alTocar(d, seleccionar, abrir);
       cont.appendChild(d);
     });
     pintarTareas();
@@ -349,7 +395,7 @@ function abrirDocumento(it, idCarpeta){
     <div class="herramientas banda-sep">
       <div class="gripper"></div>
       <button class="bh" data-n="imprimir">${ico("imprimir")}<span class="rotulo">Imprimir</span></button>
-      <button class="bh" data-n="enlace">${ico("globo")}<span class="rotulo">Copiar enlace</span></button>
+      ${it.sinEnlace ? "" : `<button class="bh" data-n="enlace">${ico("globo")}<span class="rotulo">Copiar enlace</span></button>`}
       ${it.repo ? `<div class="separador"></div><button class="bh" data-n="repo">${ico("repo")}<span class="rotulo">Ver en GitHub</span></button>` : ""}
       ${it.demo ? `<button class="bh" data-n="demo">${ico("web")}<span class="rotulo">Abrir herramienta</span></button>` : ""}
     </div>
@@ -380,13 +426,13 @@ function abrirDocumento(it, idCarpeta){
   el.querySelector('[data-n="imprimir"]').onclick = () => window.print();
   el.querySelector('[data-n="repo"]')?.addEventListener("click", () => abrirEnlace(it.repo));
   el.querySelector('[data-n="demo"]')?.addEventListener("click", () => abrirEnlace(it.demo));
-  el.querySelector('[data-n="enlace"]').onclick = () => {
+  el.querySelector('[data-n="enlace"]')?.addEventListener("click", () => {
     const url = location.href.split("#")[0] + `#${idCarpeta || ""}/${it.id}`;
     navigator.clipboard?.writeText(url).then(
       () => dialogo("Copiar enlace", "Enlace copiado al portapapeles:<br><br><b>" + url.split("/").pop() + "</b>", ["Aceptar"]),
       () => dialogo("Copiar enlace", "No se pudo copiar automáticamente. La dirección es:<br><br><b>" + url + "</b>", ["Aceptar"])
     );
-  };
+  });
 }
 
 /* ============================================================
@@ -463,12 +509,14 @@ function pintarEscritorio(){
     e.className = "icono-escritorio";
     e.tabIndex = 0;
     e.innerHTML = `<span class="marco-ico">${ico(it.i)}${it.atajo ? BADGE : ""}</span><span class="etq">${it.n}</span>`;
-    e.onclick = () => {
+    const seleccionar = () => {
       d.querySelectorAll(".icono-escritorio").forEach(x=>x.classList.remove("activo"));
       e.classList.add("activo");
     };
+    e.onclick = seleccionar;
     e.ondblclick = it.a;
     e.onkeydown = ev => { if(ev.key === "Enter") it.a(); };
+    alTocar(e, seleccionar, it.a);
     d.appendChild(e);
   });
   d.onclick = e => { if(e.target === d) d.querySelectorAll(".icono-escritorio").forEach(x=>x.classList.remove("activo")); };
@@ -480,6 +528,7 @@ function pintarMenuInicio(){
     {n:"Programas", i:"carpeta", flecha:true, a:()=>abrirExplorador("proyectos")},
     {n:"Documentos", i:"doc", flecha:true, a:()=>abrirExplorador("perfil")},
     {n:"Habilidades", i:"herramienta", a:()=>abrirExplorador("habilidades")},
+    {n:"Código", i:"terminal", a:()=>abrirExplorador("codigo")},
     {sep:true},
     {n:"Buscar", i:"buscar", a:()=>dialogo("Buscar","Usa el explorador para recorrer las carpetas del portafolio.",["Aceptar"])},
     {n:"Ayuda", i:"ayuda", a:()=>abrirExplorador("perfil")},
@@ -646,6 +695,17 @@ pintarEscritorio();
 pintarMenuInicio();
 reloj(); setInterval(reloj, 15000);
 document.addEventListener("contextmenu", e => e.preventDefault());
+
+// Si el ancho cruza el umbral móvil (redimensión de ventana o giro de
+// pantalla) con ventanas ya abiertas, se maximizan igual que las nuevas.
+window.addEventListener("resize", () => {
+  if(!tamMovil()) return;
+  ventanas.forEach(v => ventanaMaximizada(v.el));
+});
+
+// Truco conocido: sin un listener de touchstart, Safari en iOS no aplica
+// :active al tocar, y los botones parecen no responder al tacto.
+document.addEventListener("touchstart", () => {}, {passive:true});
 
 if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
   if(!aplicarHash()) abrirExplorador();

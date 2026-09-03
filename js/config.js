@@ -17,6 +17,9 @@
      oculto   → true para dejarlo como borrador, sin publicar
      repo     → URL del repositorio en GitHub  (opcional)
      demo     → URL de la herramienta en vivo  (opcional)
+     sinEnlace → true para ocultar el botón "Copiar enlace" del documento
+                 (documentos sin sentido de compartir por separado, como Bio
+                 o Leeme.txt)
 
    Cualquier ítem con repo o demo se muestra como ACCESO DIRECTO:
    le aparece la flechita en la esquina del ícono, y en su ventana
@@ -27,11 +30,11 @@ window.CONFIG = {
 
   usuario: {
     nombre: "Nel",
-    titulo: "Especialista GIS y Cartógrafo",
-    lugar:  "Región de O'Higgins, Chile",
-    email:  "tu.correo@ejemplo.cl",
-    github: "github.com/tu-usuario",
-    web:    "tu-sitio.cl"
+    titulo: "Geógrafo especialista en SIG",
+    lugar:  "Rancagua, Región de O'Higgins, Chile",
+    email:  "nelsonsanchez.al@gmail.com",
+    github: "github.com/leosanchez92",
+    web:    "leosanchez92.github.io/portafolio-nel"
   },
 
   carpetas: [
@@ -44,24 +47,27 @@ window.CONFIG = {
       desc: "Quién soy, qué hago y cómo trabajo. Parte por acá si es tu primera visita.",
       items: [
         {
-          id: "perfil-profesional",
-          nombre: "Perfil profesional.txt",
+          id: "bio",
+          nombre: "Bio.txt",
           icono: "texto",
-          titulo: "Perfil profesional",
-          desc: "Resumen de mi trayectoria: cartografía, análisis territorial y desarrollo de visores web."
+          titulo: "Bio",
+          sinEnlace: true,
+          desc: "Resumen breve de quién soy y qué hago, con las palabras clave del perfil."
         },
         {
-          id: "curriculum",
-          nombre: "Currículum.doc",
+          id: "trayectoria",
+          nombre: "Trayectoria profesional.doc",
           icono: "doc",
-          titulo: "Currículum vitae",
-          desc: "CV completo en una página, listo para imprimir o guardar como PDF."
+          titulo: "Trayectoria profesional",
+          sinEnlace: true,
+          desc: "Experiencia laboral y competencias técnicas, en una página, lista para imprimir o guardar como PDF."
         },
         {
           id: "leeme",
           nombre: "Leeme.txt",
           icono: "texto",
           titulo: "Leeme.txt",
+          sinEnlace: true,
           desc: "Notas sobre este portafolio y cómo navegarlo."
         }
       ]
@@ -157,6 +163,49 @@ window.CONFIG = {
           icono: "pincel",
           titulo: "Cartografía y diseño",
           desc: "Diseño cartográfico institucional, sistemas visuales y narrativa espacial."
+        }
+      ]
+    },
+
+    /* -------------------------------------------------- CÓDIGO */
+    {
+      id: "codigo",
+      nombre: "Código",
+      icono: "terminal",
+      desc: "Selección de repositorios en GitHub: el código tal cual, sin el envoltorio narrativo de la carpeta Proyectos.",
+      items: [
+        {
+          id: "codigo-portafolio",
+          nombre: "portafolio-nel",
+          icono: "terminal",
+          titulo: "portafolio-nel",
+          repo: "https://github.com/leosanchez92/portafolio-nel",
+          desc: "El código de este mismo portafolio: HTML, CSS y JS planos, sin build, se abre directo desde el disco."
+        },
+        {
+          id: "codigo-generador-censal",
+          nombre: "generador-visores-censales",
+          icono: "terminal",
+          titulo: "generador-visores-censales",
+          repo: "https://github.com/tu-usuario/generador-visores-censales",
+          desc: "Repositorio del generador de visores censales. Ficha completa en Proyectos."
+        },
+        {
+          id: "codigo-nibi",
+          nombre: "nibi",
+          icono: "terminal",
+          titulo: "nibi",
+          repo: "https://github.com/tu-usuario/nibi",
+          desc: "Repositorio del chatbot censal en R. Ficha completa en Proyectos."
+        },
+        {
+          id: "codigo-csv-kmz",
+          nombre: "csv-a-kmz",
+          icono: "terminal",
+          titulo: "csv-a-kmz",
+          repo: "https://github.com/tu-usuario/csv-a-kmz",
+          demo: "https://tu-usuario.github.io/csv-a-kmz/",
+          desc: "Repositorio del conversor CSV a KMZ. Ficha completa en Proyectos."
         }
       ]
     },
