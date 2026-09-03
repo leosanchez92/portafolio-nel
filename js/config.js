@@ -95,6 +95,7 @@ window.CONFIG = {
           icono: "mapa",
           titulo: "Visor Territorial Nacimiento",
           repo: "https://github.com/leosanchez92/VISOR_V1_NACIMIENTO",
+          demo: "https://www.intranetnacimiento.cl/VisorComunal/index.html",
           desc: "Visor territorial con Plan Regulador Comunal, construido para la Municipalidad de Nacimiento."
         },
         {
