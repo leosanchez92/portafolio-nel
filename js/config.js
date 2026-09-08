@@ -193,6 +193,14 @@ window.CONFIG = {
           titulo: "visor-censo-manzanas",
           repo: "https://github.com/leosanchez92/visor-censo-manzanas",
           desc: "Mapa coroplético interactivo por manzana para cualquier variable del Censo 2024: cambia el nombre de una columna del GeoPackage y obtienes un mapa nuevo, sin tocar código."
+        },
+        {
+          id: "codigo-sii-consulta-roles",
+          nombre: "sii-consulta-roles",
+          icono: "terminal",
+          titulo: "sii-consulta-roles",
+          repo: "https://github.com/leosanchez92/sii-consulta-roles",
+          desc: "Herramienta de línea de comandos en Python para consultar de forma masiva roles de avalúo del SII: entrega comuna, dirección y coordenadas por predio, en CSV, Excel, GeoJSON y mapa HTML."
         }
       ]
     },
