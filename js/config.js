@@ -81,6 +81,15 @@ window.CONFIG = {
       desc: "Visores territoriales entregados y proyectos en curso.",
       items: [
         {
+          id: "geoportal-nueva-imperial",
+          nombre: "Geoportal Nueva Imperial (Proto-IDE)",
+          icono: "mapa",
+          titulo: "Geoportal Nueva Imperial — Proto-IDE",
+          repo: "https://github.com/leosanchez92/proyecto-ide-demo",
+          demo: "https://proyecto-ide.vercel.app",
+          desc: "Geoportal administrable multi-categoría sobre PostGIS/Supabase: catálogo, visor único, control público/privado por RLS, edición de puntos y panel de administración."
+        },
+        {
           id: "visor-nueva-imperial",
           nombre: "Visor Territorial Nueva Imperial",
           icono: "mapa",
